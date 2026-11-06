@@ -425,6 +425,15 @@ function end(){const ok=list.some(o=>!o.skip&&o.sets.some(s=>full(o,s)));
  const adv=ok||SDAY===7;let pushed=false;if(adv&&(!LASTDONE||SD>LASTDONE)){day=SDAY%7+1;LASTDONE=SD;pushed=true}
  list=[];LIVE=false;BD=0;toast(!adv?'沒有完整填完的組，這次不存，進度不動':pushed?'已儲存，進到第 '+day+' 天':'已儲存（日期不晚於最後完成日，進度不動）');today()}
 
+function nmS(t,i){const o=t==='k'?KINDS:PO,n=$('nmI').value.trim();if(!n)return toast('請輸入名稱');if(o.some((x,j)=>j!==i&&x===n))return toast('名稱已存在');
+ if(i<0)o.push(n);else{const old=o[i];o[i]=n;
+  if(t==='k')CARDIO.forEach(c=>{if(c.k===old)c.k=n});
+  else{ACT.forEach(a=>{if(a.part===old)a.part=n});SESS.forEach(x=>x.ex.forEach(e=>{if(e.part===old)e.part=n}));for(const k in LB)if(LB[k][old]){LB[k][n]=LB[k][old];delete LB[k][old]}}}
+ cl();stg();toast('已儲存')}
+function nmD(t,i){const o=t==='k'?KINDS:PO,n=o[i],c=t==='k'?CARDIO.filter(x=>x.k===n).length:ACT.filter(a=>a.part===n).length;
+ if(c){cl();return sheet(`<p>${t==='k'?`「${n}」有 ${c} 筆有氧紀錄在用，不能刪除，可以改名。`:`「${n}」有 ${c} 個動作在用，不能刪除。請先到動作庫把這些動作改到別的部位。`}</p><button onclick="cl()">知道了</button>`)}
+ o.splice(i,1);stg();toast('已刪除')}
+
 today();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
 </script>
