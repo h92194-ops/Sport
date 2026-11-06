@@ -147,7 +147,7 @@ function card(o,e){const d=nd(o)>=o.sets.length&&o.sets.length>0;
  <input class="note" placeholder="備注" value="${o.note}" oninput="list[${e}].note=this.value">
  <div class="acts"><button onclick="addSet(${e})">加一組</button>${ver==='gym'?`<button onclick="sub(${e})">換動作</button>`:''}${o.extra?`<button onclick="rmx(${e})">移除</button>`:`<button onclick="skip(${e})">跳過</button>`}<button onclick="next(${e})">下一個</button></div></div>`:''}</div>`}
 function train(){if(window.DET)return detail();
- $('app').innerHTML=`<header><button class="back" onclick="today()">‹</button>${DAYS[day-1]}<small>${ver==='gym'?'健身房版':'家中版'}・${fmt(date)}</small></header>${list.map(card).join('')}
+ $('app').innerHTML=`<header><button class="back" onclick="today()">‹</button>${DAYS[SDAY-1]}<small>${ver==='gym'?'健身房版':'家中版'}・${SD.replace(/-/g,'/')}</small></header>${list.map(card).join('')}
  <div class="wrap"><button class="big" style="background:none;color:var(--ink);border:2px dashed var(--soft);box-shadow:none" onclick="addT()">＋ 加練動作（只影響這次）</button></div><div class="bar"><button class="big" onclick="end()">結束訓練</button></div>`}
 function inp(e,i,f,v){const o=list[e];o.sets[i][f]=v;chk(e)}
 function tick(e,i){const o=list[e];o.sets[i].ok=!o.sets[i].ok;chk(e,true)}
@@ -407,6 +407,23 @@ function doRs(t){if(t==='a')localStorage.removeItem('sport_v1');else{SESS=[];CAR
  day=s.day;SESS=s.SESS;CARDIO=s.CARDIO;LASTDONE=s.LASTDONE;LASTX=new Date(s.LASTX);SNZ=s.SNZ?new Date(s.SNZ):null;NEWK=new Set(s.NEWK);LIVE=s.LIVE;SD=s.SD;SDAY=s.SDAY;ver=s.ver;list=s.list;THEME=s.THEME;
  if(THEME!=='s')document.documentElement.setAttribute('data-theme',THEME==='l'?'light':'dark')}catch(e){}})();
 setInterval(sv,1500);addEventListener('pagehide',sv);document.addEventListener('visibilitychange',sv);
+
+var BD=0;
+const isT=()=>iso(date)===iso(T0),ed=()=>isT()?day:(BD||day);
+function chD(v){if(!v)return;const d=new Date(v+'T00:00');if(d>T0){toast('不能選未來的日期');return today()}date=d;BD=0;today()}
+function today(){const e=ed(),bf=!isT();
+ $('app').innerHTML=`<header>今天${bf?' <span class="pill" style="font-size:12px;padding:2px 8px">補記</span>':''}</header>${bk()}<div class="wrap"><div class="hero">
+ <button class="datebtn">${fmt(date)}<input type="date" max="${iso(T0)}" value="${iso(date)}" onchange="chD(this.value)"></button>
+ ${bf?`<div class="fl2" style="justify-content:center;gap:10px;margin-top:8px">補記第幾天<select style="width:auto" onchange="BD=+this.value;today()">${[1,2,3,4,5,6,7].map(n=>`<option value="${n}" ${n===e?'selected':''}>第 ${n} 天</option>`).join('')}</select></div>`:''}
+ <div class="day">第 ${e} 天</div><div class="sub">${DAYS[e-1]}</div></div>
+ ${e===7?`<button class="pill" style="width:100%;padding:16px;font-size:17px;border-radius:14px;margin-top:14px" onclick="addC()">新增有氧（可不做）</button><button class="big" onclick="finishRest()">完成休息日</button><div class="acts" style="margin:0 0 14px"><button onclick="start('gym',1)">加練重訓：健身房</button><button onclick="start('home',1)">加練重訓：家中</button></div>`:`<button class="big" onclick="start('gym')">健身房版</button><button class="big" onclick="start('home')">家中版</button><button class="pill" style="width:100%;padding:14px;font-size:16px;border-radius:14px" onclick="addC()">新增有氧</button>`}</div>${cardL()}${tabs(0)}`}
+function start(v,e){if(LIVE)return toast('有未結束的訓練，請先繼續或結束');const dd=ed();ver=v;SD=iso(date);SDAY=dd;const d=PL[dd-1],c=d[v==='gym'?'g':'h'];
+ list=e||!d.t?[]:[c.s&&obj(c.s)].concat(c.a.map(a=>obj(a.n,a.ov))).filter(Boolean);LIVE=true;train()}
+function finishRest(){const d=iso(date),e=ed();if(!LASTDONE||d>LASTDONE){day=e%7+1;LASTDONE=d}BD=0;toast('已完成休息日，進度在第 '+day+' 天');today()}
+function end(){const ok=list.some(o=>!o.skip&&o.sets.some(s=>full(o,s)));
+ if(ok){const ex=list.filter(o=>!o.skip).map(o=>Object.assign({},o,{sets:o.sets.filter(s=>s.reps!==''||s.rir!==''||s.ok)})).filter(o=>o.sets.length);SESS.push({id:Date.now(),date:SD,day:SDAY,ver,ex})}
+ const adv=ok||SDAY===7;let pushed=false;if(adv&&(!LASTDONE||SD>LASTDONE)){day=SDAY%7+1;LASTDONE=SD;pushed=true}
+ list=[];LIVE=false;BD=0;toast(!adv?'沒有完整填完的組，這次不存，進度不動':pushed?'已儲存，進到第 '+day+' 天':'已儲存（日期不晚於最後完成日，進度不動）');today()}
 
 today();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
