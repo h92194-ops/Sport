@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sport</title><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Sport"><meta name="theme-color" content="#b79a8c"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Iansui&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ffe6da;--bar:#b79a8c;--barline:#8f7365;--btn:#b8775a;--btn2:#a2654a;--ink:#5e3f31;--soft:#8a6a5b;--line:#d9b8a6;--card:#fff3ec;--acc:#e8590c;--onbtn:#fff;--field:#fff;
+--f:"Iansui","PingFang TC","Noto Sans TC",system-ui,sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2a1f1a;--bar:#5b463c;--barline:#3d2d26;--btn:#9c6a4e;--btn2:#85563d;--ink:#f4dccd;--soft:#c9a794;--line:#5a4439;--card:#352620;--acc:#ff8a3d;--field:#241915;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#2a1f1a;--bar:#5b463c;--barline:#3d2d26;--btn:#9c6a4e;--btn2:#85563d;--ink:#f4dccd;--soft:#c9a794;--line:#5a4439;--card:#352620;--acc:#ff8a3d;--field:#241915;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:16px}
+*{box-sizing:border-box}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bar);z-index:10}
+.app{max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:96px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bar);border-bottom:4px solid var(--barline);text-align:center;padding:14px 56px;font-size:20px;color:#fff;min-height:56px}
+header small{display:block;font-size:13px;opacity:.9}
+.back{position:absolute;left:12px;top:12px;width:36px;height:34px;border:1.5px solid #fff;background:none;color:#fff;border-radius:4px;font-size:20px;font-family:inherit}
+button{font-family:inherit;cursor:pointer}
+.big{display:block;width:100%;background:var(--btn);color:var(--onbtn);border:0;border-radius:14px;padding:18px;font-size:19px;margin:14px 0;box-shadow:0 4px 0 var(--btn2)}
+.big:active{transform:translateY(2px);box-shadow:0 2px 0 var(--btn2)}
+.pill{background:var(--acc);color:#fff;border:0;border-radius:14px;padding:6px 14px;font-size:14px}
+.wrap{padding:0 22px}
+.hero{text-align:center;padding:26px 0 8px}
+.hero .day{font-size:34px;margin:6px 0}
+.hero .sub{color:var(--soft)}
+.datebtn{display:inline-block;border:1.5px solid var(--soft);border-radius:8px;padding:6px 12px;color:var(--ink);background:none;position:relative;font-size:15px}
+.datebtn input{position:absolute;inset:0;opacity:0;width:100%}
+.tabs{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:var(--bar);border-top:4px solid var(--barline);display:flex;padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs button{flex:1;background:none;border:0;color:#fff;opacity:.7;padding:12px 0;font-size:14px}
+.tabs .on{opacity:1;border-bottom:3px solid var(--acc)}
+.card{margin:12px 14px;background:var(--card);border-radius:12px;border:1px solid var(--line)}
+.ch{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;gap:8px;cursor:pointer}
+.ch b{font-weight:normal;font-size:17px}
+.cnt{font-size:13px;color:var(--soft);white-space:nowrap}
+.done .ch{opacity:.85}.done .cnt{color:var(--acc)}
+.body{padding:0 14px 14px}
+.tg{font-size:13px;color:var(--soft);line-height:1.6;margin-bottom:6px}
+.set{display:grid;gap:6px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.set .n{font-size:13px;color:var(--soft)}
+.set input{width:100%;min-width:0;font:inherit;font-family:system-ui,sans-serif;font-size:16px;text-align:center;border:1.5px solid var(--line);border-radius:10px;padding:9px 2px;background:var(--field);color:var(--ink)}
+.set input::placeholder{color:var(--soft);font-size:12px;font-family:var(--f)}
+.fl{display:flex;gap:6px;flex-wrap:wrap;grid-column:1/-1}
+.seg button,.sw button{flex:1;border:1.5px solid var(--line);background:var(--field);color:var(--ink);border-radius:10px;padding:8px 0;font-size:13px}
+.seg,.sw{display:flex;gap:5px;grid-column:1/-1}
+.seg .on{background:var(--btn);color:#fff;border-color:var(--btn)}
+.sw button{color:#fff;border-color:transparent;text-shadow:0 0 2px rgba(0,0,0,.5)}
+.sw .on{outline:3px solid var(--ink);outline-offset:1px}
+.chk{width:100%;border:1.5px solid var(--line);background:var(--field);color:var(--ink);border-radius:10px;padding:10px;font-size:15px;grid-column:2/-1}
+.chk.on{background:var(--btn);color:#fff;border-color:var(--btn)}
+.acts{display:flex;gap:8px;margin-top:8px}
+.acts button{flex:1;border:1.5px solid var(--soft);background:none;color:var(--ink);border-radius:10px;padding:9px 0;font-size:14px}
+.note{width:100%;margin-top:8px;font:inherit;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;background:var(--field);color:var(--ink)}
+.bar{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;padding:10px 18px calc(10px + env(safe-area-inset-bottom,0px));background:var(--bar);border-top:4px solid var(--barline)}
+.bar .big{margin:0}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet div{width:100%;max-width:480px;background:var(--bg);border-radius:18px 18px 0 0;padding:16px 18px calc(18px + env(safe-area-inset-bottom,0px))}
+.sheet p{margin:0 0 8px;color:var(--soft);font-size:14px}
+.sheet button{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:14px 4px;font-size:17px;color:var(--ink)}
+#toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:20px;font-size:14px;z-index:30;opacity:0;pointer-events:none;transition:opacity .2s;white-space:nowrap}
+#toast.s{opacity:1}
+.skip{opacity:.55}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:12px 14px}
+.chip{flex:none;border:1.5px solid var(--line);background:var(--field);color:var(--ink);border-radius:16px;padding:6px 14px;font-size:14px}
+.chip.on{background:var(--btn);color:#fff;border-color:var(--btn)}
+.row{display:flex;align-items:center;gap:12px;padding:13px 18px;border-bottom:1px solid var(--line);cursor:pointer}
+.row>div{flex:1}.row>span:last-child{color:var(--soft)}
+.pill2{border:1.5px solid var(--soft);border-radius:14px;padding:3px 10px;font-size:14px;min-width:58px;text-align:center}
+.sub2{font-size:13px;color:var(--soft);margin-top:2px}
+.fl2{display:flex;justify-content:space-between;align-items:center;padding:6px 0}
+.fl2 input,.fl2 select{width:55%;font:inherit;font-size:16px;border:1.5px solid var(--line);border-radius:10px;padding:8px;background:var(--field);color:var(--ink)}
+.sheet .acts{padding:0;background:none;border-radius:0;margin-top:10px}
+.sheet .acts button{text-align:center;border:1.5px solid var(--soft);border-radius:10px;padding:12px 0}
+body.det .card .acts button:nth-last-child(-n+2){display:none}
+.empty{text-align:center;color:var(--soft);padding:30px}
+.sheet{align-items:center;padding:18px}
+.sheet>div{border-radius:18px;max-height:80vh;overflow:auto}
+.pv{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.5}
+.mv{border:1.5px solid var(--soft);background:none;color:var(--ink);border-radius:8px;width:34px;height:30px;font-size:12px;padding:0}
+.grp{font-size:13px;color:var(--soft);padding:10px 0 2px}
+.fab{position:fixed;bottom:calc(66px + env(safe-area-inset-bottom,0px));right:max(16px,calc(50% - 224px));z-index:6;background:var(--acc);color:#fff;border:0;border-radius:24px;padding:13px 20px;font-size:16px;box-shadow:0 3px 8px rgba(0,0,0,.3)}
+.lk{font-size:12px;color:var(--soft);padding:2px 0 6px}
+.sheet .pk{display:flex;justify-content:space-between}
+.rg{display:flex;gap:6px;align-items:center;width:55%}.rg input{width:100%;min-width:0;font-size:16px;border:1.5px solid var(--line);border-radius:10px;padding:8px;background:var(--field);color:var(--ink);text-align:center}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<div id="toast"></div>
+<script>
+const COL={綠:'#5f9c45',橘:'#d99a1e',藍:'#3f74c9',灰:'#7d7d7d',黑:'#222'};
+const CAND={
+ 胸:[{name:'蝴蝶機夾胸',mode:'g',n:2,reps:'4–8',last:'35'},{name:'單臂啞鈴臥推',mode:'g',n:2,reps:'4–8',last:'18'},{name:'槓鈴臥推',mode:'g',n:2,reps:'4–8',last:'50'}],
+ 背:[{name:'反握引體向上',mode:'a',n:2,reps:'',rir:'2–3',last:'10'},{name:'單臂啞鈴划船',mode:'g',n:2,reps:'4–8',last:'24'}],
+ 核心:[{name:'鳥狗式',mode:'c',n:2,rir:'2–3'}]};
+const GYM=[
+ {name:'死蟲式',part:'核心',mode:'c',n:2,rir:'2–3'},
+ {name:'機械式胸推',part:'胸',mode:'g',n:2,reps:'8–10',best:'40 kg × 10（10/28）',last:'40'},
+ {name:'輔助引體向上',part:'背',mode:'a',n:2,reps:'8–10',best:'純自重 × 5（10/21）',last:'10'},
+ {name:'啞鈴上斜臥推 45°',part:'胸',mode:'g',n:2,reps:'4–8',best:'20 kg × 8（10/28）',last:'20'}];
+const HOME=[
+ {name:'死蟲式',part:'核心',mode:'c',n:2,rir:'2–3'},
+ {name:'彈力帶胸推',part:'胸',mode:'b',n:2,reps:'8–10',best:'灰 × 12（10/27）',lastColor:'灰'},
+ {name:'保加利亞分腿蹲',part:'股四頭',mode:'w',n:2,rir:'2–3',best:'14 下（10/27）'}];
+let list=[],ver='',day=1,date=new Date(),ex=0;
+const DAYS=['訓練日一','訓練日二','訓練日三','訓練日四','訓練日五','訓練日六','休息日'];
+const fmt=d=>`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
+const $=s=>document.getElementById(s);
+function toast(t){const e=$('toast');e.textContent=t;e.className='s';setTimeout(()=>e.className='',1800)}
+function mkSet(o){return{kg:o.last||'',reps:'',rir:'',type:'輔助',color:o.lastColor||'',ok:false}}
+function mk(o){return Object.assign({open:true,skip:false,note:'',was:false},o,{sets:Array.from({length:o.n},()=>mkSet(o))})}
+function full(o,s){const r=s.reps!==''&&s.rir!=='';
+ if(o.mode==='c')return s.ok;
+ if(o.mode==='g')return s.kg!==''&&r;
+ if(o.mode==='w')return r;
+ if(o.mode==='a')return(s.type==='純自重'||s.kg!=='')&&r;
+ return s.color!==''&&r}
+const nd=o=>o.sets.filter(s=>full(o,s)).length;
+function today(){
+ const t=DAYS[day-1];
+ $('app').innerHTML=`<header>今天</header>${bk()}<div class="wrap"><div class="hero">
+ <button class="datebtn">${fmt(date)}<input type="date" value="${date.toISOString().slice(0,10)}" onchange="date=new Date(this.value+'T00:00');today()"></button>
+ <div class="day">第 ${day} 天</div><div class="sub">${t}</div></div>
+ ${day===7?`<button class="pill" style="width:100%;padding:16px;font-size:17px;border-radius:14px;margin-top:14px" onclick="addC()">新增有氧（可不做）</button><button class="big" onclick="finishRest()">完成休息日</button><div class="acts" style="margin:0 0 14px"><button onclick="start('gym',1)">加練重訓：健身房</button><button onclick="start('home',1)">加練重訓：家中</button></div>`:`<button class="big" onclick="start('gym')">健身房版</button><button class="big" onclick="start('home')">家中版</button>`}
+ ${day===7?'':`<button class="pill" style="width:100%;padding:14px;font-size:16px;border-radius:14px" onclick="addC()">新增有氧</button>`}</div>
+ ${cardL()}${tabs(0)}`}
+function finishRest(){day=1;toast('已完成，進到第 1 天');today()}
+function start(v,e){ver=v;list=e?[]:(v==='gym'?GYM:HOME).map(mk);train()}
+function setRow(o,e,i){const s=o.sets[i],p=`${e},${i}`;
+ const inp=(f,ph,m='decimal')=>`<input inputmode="${m}" placeholder="${ph}" value="${s[f]}" oninput="inp(${p},'${f}',this.value)">`;
+ if(o.mode==='c')return`<div class="set" style="grid-template-columns:34px 1fr"><span class="n">第${i+1}組</span><button class="chk ${s.ok?'on':''}" onclick="tick(${p})">${s.ok?'已完成':'點一下完成'}</button></div>`;
+ if(o.mode==='g')return`<div class="set" style="grid-template-columns:34px 1fr 1fr 1fr"><span class="n">第${i+1}組</span>${inp('kg','kg')}${inp('reps','次數','numeric')}${inp('rir','RIR','numeric')}</div>`;
+ if(o.mode==='w')return`<div class="set" style="grid-template-columns:34px 1fr 1fr"><span class="n">第${i+1}組</span>${inp('reps','次數','numeric')}${inp('rir','RIR','numeric')}</div>`;
+ if(o.mode==='a')return`<div class="set" style="grid-template-columns:34px ${s.type==='純自重'?'':'1fr '}1fr 1fr"><span class="n">第${i+1}組</span>${s.type==='純自重'?'':inp('kg',s.type==='輔助'?'輔助kg':'加重kg')}${inp('reps','次數','numeric')}${inp('rir','RIR','numeric')}
+ <div class="seg">${['純自重','加重','輔助'].map(t=>`<button class="${s.type===t?'on':''}" onclick="typ(${p},'${t}')">${t}</button>`).join('')}</div></div>`;
+ return`<div class="set" style="grid-template-columns:34px 1fr 1fr"><span class="n">第${i+1}組</span>${inp('reps','次數','numeric')}${inp('rir','RIR','numeric')}
+ <div class="sw">${(o.b0?['無']:[]).concat(Object.keys(COL)).map(c=>`<button style="background:${COL[c]||'#aaa'}" class="${s.color===c?'on':''}" onclick="col(${p},'${c}')">${c}</button>`).join('')}</div></div>`}
+function card(o,e){const d=nd(o)>=o.sets.length&&o.sets.length>0;
+ const tg=[`目標 ${o.n} 組`,o.reps?`${o.reps} 下`:'',o.rir?`RIR ${o.rir}`:''].filter(Boolean).join('・');
+ const cnt=o.skip?'已跳過':(!o.open||d)?`已完成 ${nd(o)} 組`:`${nd(o)}/${o.sets.length} 組`;
+ return`<div class="card ${d?'done':''} ${o.skip?'skip':''}" id="c${e}"><div class="ch" onclick="tog(${e})"><b>${o.name}</b><span class="cnt" id="n${e}">${cnt}</span></div>
+ ${o.open&&!o.skip?`<div class="body"><div class="tg">${tg}${o.best?`<br>最佳 ${o.best}`:''}</div>${o.sets.map((s,i)=>setRow(o,e,i)).join('')}
+ <input class="note" placeholder="備注" value="${o.note}" oninput="list[${e}].note=this.value">
+ <div class="acts"><button onclick="addSet(${e})">加一組</button>${ver==='gym'?`<button onclick="sub(${e})">換動作</button>`:''}${o.extra?`<button onclick="rmx(${e})">移除</button>`:`<button onclick="skip(${e})">跳過</button>`}<button onclick="next(${e})">下一個</button></div></div>`:''}</div>`}
+function train(){if(window.DET)return detail();
+ $('app').innerHTML=`<header><button class="back" onclick="today()">‹</button>${DAYS[day-1]}<small>${ver==='gym'?'健身房版':'家中版'}・${fmt(date)}</small></header>${list.map(card).join('')}
+ <div class="wrap"><button class="big" style="background:none;color:var(--ink);border:2px dashed var(--soft);box-shadow:none" onclick="addT()">＋ 加練動作（只影響這次）</button></div><div class="bar"><button class="big" onclick="end()">結束訓練</button></div>`}
+function inp(e,i,f,v){const o=list[e];o.sets[i][f]=v;chk(e)}
+function tick(e,i){const o=list[e];o.sets[i].ok=!o.sets[i].ok;chk(e,true)}
+function typ(e,i,t){list[e].sets[i].type=t;list[e].sets[i].kg='';train()}
+function col(e,i,c){list[e].sets[i].color=c;chk(e,true)}
+function chk(e,force){const o=list[e],d=nd(o)>=o.sets.length;
+ if(d&&!o.was){o.was=true;o.open=false;train();toast(o.name+' 已完成，自動收合');return}
+ if(!d)o.was=false;
+ if(force)train();else $('n'+e).textContent=`${nd(o)}/${o.sets.length} 組`}
+function tog(e){list[e].open=!list[e].open;list[e].skip=false;train()}
+function addSet(e){list[e].sets.push(mkSet(list[e]));list[e].was=false;train()}
+function skip(e){list[e].skip=true;list[e].open=false;train()}
+function next(e){list[e].open=false;train();const c=$('c'+(e+1));if(c)c.scrollIntoView({behavior:'smooth',block:'center'})}
+function sub(e){const o=list[e],c=(CAND[o.part]||[]).filter(x=>x.name!==o.name);
+ const s=document.createElement('div');s.className='sheet';s.id='sh';s.onclick=ev=>{if(ev.target===s)s.remove()};
+ s.innerHTML=`<div><p>同部位（${o.part}）、場地含健身房的動作</p>${c.map((x,i)=>`<button onclick="pick(${e},${i})">${x.name}</button>`).join('')||'<p>沒有可替換動作</p>'}</div>`;
+ document.body.appendChild(s);window._c=c}
+function pick(e,i){const o=list[e],x=window._c[i];list[e]=mk(Object.assign({part:o.part},x));$('sh').remove();train();toast('已換成 '+x.name)}
+function end(){day=day%7+1;toast('訓練已結束，進到第 '+day+' 天');today()}
+var DET=0,DEL=new Set();
+const T0=new Date();T0.setHours(0,0,0,0);
+const dOff=n=>{const d=new Date(T0);d.setDate(d.getDate()-n);return d};
+const md=d=>`${d.getMonth()+1}/${d.getDate()}`,mk2=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+const LV=['無','綠','橘','藍','灰','黑'],WK='日一二三四五六',KINDS=['跑步機','橢圓機','爬坡機','階梯機','跳繩','間歇'];
+const RNG=[[30,'1 個月'],[90,'3 個月'],[180,'半年'],[365,'1 年']];
+const EXL=[{n:'機械式胸推',p:'胸',m:'g'},{n:'啞鈴上斜臥推 45°',p:'胸',m:'g'},{n:'伏地挺身',p:'胸',m:'w'},{n:'彈力帶胸推',p:'胸',m:'b'},{n:'輔助引體向上',p:'背',m:'a'},{n:'彈力帶弓箭步蹲',p:'股四頭',m:'l'}];
+let R={tab:'w',mon:mk2(T0),ex:0,rg:30,ty:'加重',q:'',view:'list',age:1};
+function tabs(c){return`<nav class="tabs">${['今天','計劃','動作庫','紀錄','設定'].map((x,i)=>`<button class="${i===c?'on':''}" onclick="${i===0?"DET=0;document.body.classList.remove('det');today()":i===3?'rec()':i===1?'plan()':i===2?'libp()':i===4?'stg()':`toast('${x}：原型尚未做')`}">${x}</button>`).join('')}</nav>`}
+function ser(e,t){const o=[];for(let k=0;k<60;k++){const a=358-k*6;let r=8+(k*7%4),v,l;
+ if(e.m==='g'){v=(e.n[0]==='啞'?20:30)+Math.floor(k/5)*2.5;l=`${v} kg × ${r}`}
+ else if(e.m==='w'){v=r=6+Math.floor(k/6);l=`${v} 下`}
+ else if(e.m==='b'){v=1+Math.min(4,Math.floor(k/13));l=`${LV[v]} × ${r}`}
+ else if(e.m==='l'){v=Math.min(5,Math.floor(k/10));l=`${LV[v]} × ${r}`}
+ else if(t==='輔助'){if(k>=45)continue;v=Math.round((40-k*.7)*2)/2;l=`輔助 ${v} kg × ${r}`}
+ else if(t==='加重'){if(k<35)continue;v=2.5+Math.floor((k-35)/4)*2.5;l=`加重 +${v} kg × ${r}`}
+ else{if(k<18)continue;v=r=3+Math.floor((k-18)/8);l=`純自重 × ${v} 下`}
+ o.push({a,d:dOff(a),v,r,l})}return o}
+function bestI(all,inv){let b=0;all.forEach((p,i)=>{const q=all[b];if(inv?(p.v<q.v||(p.v===q.v&&p.r>q.r)):(p.v>q.v||(p.v===q.v&&p.r>q.r)))b=i});return b}
+function CD(a){const dn=((364-a)%7)+1;if(dn!==7&&a%9!==0)return null;
+ const c={k:KINDS[a%6],min:20+a%4*5,km:a%4===0?'':(3+a%5*.5).toFixed(1),bpm:a%6===0?'':130+a%12,kcal:200+a%9*20};
+ c.t=[c.min+' 分',c.km&&c.km+' km',c.bpm&&'平均 '+c.bpm,c.kcal+' kcal'].filter(Boolean).join('、');return c}
+function rec(){DET=0;document.body.classList.remove('det');
+ const h=`<header>紀錄</header><div class="seg" style="padding:12px 14px 0">${[['w','訓練'],['c','有氧'],['t','趨勢']].map(([k,n])=>`<button class="${R.tab===k?'on':''}" onclick="R.tab='${k}';R.view='list';rec()">${n}</button>`).join('')}</div>`;
+ const b=R.tab==='t'?(R.view==='chart'?chartView():`<div class="wrap" style="padding-top:14px"><input class="note" style="margin:0 0 6px" placeholder="搜尋動作名稱" value="${R.q}" oninput="R.q=this.value;res()"><div id="res"></div></div>`):months()+rows();
+ $('app').innerHTML=h+b+tabs(3);if(R.tab==='t'&&R.view==='list')res()}
+function res(){const q=R.q.trim(),l=EXL.map((e,i)=>[e,i]).filter(([e])=>e.n.includes(q));
+ $('res').innerHTML=l.map(([e,i])=>`<div class="row" style="padding-left:0;padding-right:0" onclick="R.ex=${i};R.view='chart';rec()"><span class="pill2">${e.p}</span><div>${e.n}</div><span>›</span></div>`).join('')||'<p class="empty">沒有符合的動作</p>'}
+function months(){let c='';for(let i=0;i<12;i++){const m=new Date(T0.getFullYear(),T0.getMonth()-i,1),k=mk2(m);c+=`<button class="chip ${R.mon===k?'on':''}" onclick="R.mon='${k}';rec()">${m.getFullYear()%100}/${m.getMonth()+1}</button>`}return`<div class="chips">${c}</div>`}
+function rows(){let h='';for(let a=0;a<365;a++){const d=dOff(a);if(mk2(d)!==R.mon)continue;const dn=((364-a)%7)+1,c=CD(a);
+ if(R.tab==='w'){if(dn===7||a===0||DEL.has('w'+a))continue;h+=`<div class="row" onclick="openW(${a})"><span class="pill2">${md(d)}</span><div>${DAYS[dn-1]}・${a%5===0?'家中版':'健身房版'}<div class="sub2">星期${WK[d.getDay()]}・完成 6 個動作</div></div><span>›</span></div>`}
+ else if(c&&!DEL.has('c'+a))h+=`<div class="row" onclick="openC(${a})"><span class="pill2">${md(d)}</span><div>${c.k}<div class="sub2">${c.t}</div></div><span>›</span></div>`}
+ return h||'<p class="empty">這個月沒有紀錄</p>'}
+function sheet(html){const s=document.createElement('div');s.className='sheet';s.id='sh';s.onclick=e=>{if(e.target===s)s.remove()};s.innerHTML='<div>'+html+'</div>';document.body.appendChild(s)}
+function shc(t){$('sh').remove();toast(t)}
+function openC(a){const c=CD(a),f=(l,v)=>`<label class="fl2">${l}<input inputmode="decimal" value="${v}"></label>`;
+ sheet(`<p>${md(dOff(a))}・修改有氧（欄位可空白）</p><label class="fl2">種類<select>${KINDS.map(k=>`<option ${k===c.k?'selected':''}>${k}</option>`).join('')}</select></label>${f('時間（分）',c.min)}${f('距離（km）',c.km)}${f('平均心率',c.bpm)}${f('消耗熱量',c.kcal)}<div class="acts"><button onclick="shc('已儲存')">儲存</button><button style="color:var(--acc)" onclick="DEL.add('c${a}');shc('已刪除這筆有氧');rec()">刪除</button></div>`)}
+const DG=[{name:'機械式胸推',part:'胸',mode:'g',reps:'8–10',best:'40 kg × 10（10/28）',s:[{kg:'40',reps:'10',rir:'2'},{kg:'40',reps:'9',rir:'1'}]},{name:'輔助引體向上',part:'背',mode:'a',reps:'8–10',best:'純自重 × 5（10/21）',s:[{type:'輔助',kg:'10',reps:'8',rir:'2'},{type:'純自重',reps:'4',rir:'1'}]},{name:'死蟲式',part:'核心',mode:'c',rir:'2–3',s:[{ok:true},{ok:true}]}];
+const DH=[{name:'彈力帶胸推',part:'胸',mode:'b',reps:'8–10',best:'灰 × 12（10/27）',s:[{color:'灰',reps:'12',rir:'2'},{color:'灰',reps:'10',rir:'1'}]},{name:'保加利亞分腿蹲',part:'股四頭',mode:'w',rir:'2–3',best:'14 下（10/27）',s:[{reps:'12',rir:'2'},{reps:'10',rir:'2'}]},{name:'死蟲式',part:'核心',mode:'c',rir:'2–3',s:[{ok:true},{ok:true}]}];
+function dx(o){const x=mk(Object.assign({n:2},o));x.sets=o.s.map(s=>Object.assign(mkSet(o),s));x.n=x.sets.length;x.was=true;return x}
+function openW(a){R.age=a;DET=1;ver=a%5===0?'home':'gym';list=(ver==='gym'?DG:DH).map(dx);detail()}
+function detail(){const d=dOff(R.age),dn=((364-R.age)%7)+1;document.body.classList.add('det');
+ $('app').innerHTML=`<header><button class="back" onclick="rec()">‹</button>${md(d)}・${DAYS[dn-1]}<small>${ver==='gym'?'健身房版':'家中版'}・可直接修改</small></header>${list.map(card).join('')}<div class="bar"><button class="big" style="background:var(--acc);box-shadow:0 4px 0 #a73f00" onclick="delW()">刪除這筆訓練</button></div>`}
+function delW(){sheet(`<p>刪除這筆訓練？不會改變「下一個要練第幾天」，最佳一次與趨勢圖會重新計算。</p><div class="acts"><button style="color:var(--acc)" onclick="DEL.add('w'+R.age);$('sh').remove();rec();toast('已刪除這筆訓練')">刪除</button><button onclick="$('sh').remove()">取消</button></div>`)}
+function info(i){const p=window._p[i];$('info').textContent=`${p.d.getFullYear()}/${md(p.d)}・${p.l}`}
+function chartView(){const e=EXL[R.ex],ty=e.m==='a'?R.ty:'',all=ser(e,ty),pts=all.filter(p=>p.a<=R.rg),b=all[bestI(all,ty==='輔助')],inv=ty==='輔助',lv=e.m==='b'||e.m==='l',W=340,H=220,L=48,Rr=14,T=16,B=28;
+ let lo,hi,tk;
+ if(lv){lo=(e.m==='l'?0:1)-.3;hi=5.3;tk=[];for(let i=Math.ceil(lo);i<=5;i++)tk.push(i)}
+ else{const vs=(pts.length?pts:all).map(p=>p.v);let mn=Math.min(...vs),mx=Math.max(...vs);if(mn===mx){mn-=1;mx+=1}tk=[mn,(mn+mx)/2,mx].map(v=>Math.round(v*10)/10);const pd=(mx-mn)*.15;lo=mn-pd;hi=mx+pd}
+ const Y=v=>{const f=(v-lo)/(hi-lo);return T+(inv?f:1-f)*(H-T-B)},X=a=>L+(1-a/R.rg)*(W-L-Rr);
+ let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">`;
+ tk.forEach(v=>s+=`<line x1="${L}" x2="${W-Rr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${L-6}" y="${Y(v)+4}" text-anchor="end" font-size="11" fill="var(--soft)">${lv?LV[v]:v}</text>`);
+ s+=`<text x="${L}" y="${H-8}" font-size="11" fill="var(--soft)">${md(dOff(R.rg))}</text><text x="${W-Rr}" y="${H-8}" text-anchor="end" font-size="11" fill="var(--soft)">${md(T0)}</text>`;
+ if(pts.length){s+=`<polyline fill="none" stroke="var(--btn)" stroke-width="2.5" points="${pts.map(p=>X(p.a)+','+Y(p.v)).join(' ')}"/>`;
+  pts.forEach((p,i)=>s+=`<circle cx="${X(p.a)}" cy="${Y(p.v)}" r="${p===b?7:5}" fill="${p===b?'var(--acc)':'var(--btn)'}" stroke="var(--bg)" stroke-width="2" onclick="info(${i})"/>`);
+  if(pts.includes(b))s+=`<text x="${X(b.a)}" y="${Y(b.v)-12}" text-anchor="middle" font-size="12" fill="var(--acc)">最佳</text>`}
+ else s+=`<text x="${W/2}" y="${H/2}" text-anchor="middle" font-size="15" fill="var(--soft)">這段期間沒有紀錄</text>`;
+ window._p=pts;
+ return`<div class="wrap"><button class="pill" style="margin:12px 0" onclick="R.view='list';rec()">‹ 動作清單</button><div style="font-size:20px">${e.n}</div>
+ ${e.m==='a'?`<div class="seg" style="margin-top:10px">${['輔助','加重','純自重'].map(t=>`<button class="${R.ty===t?'on':''}" onclick="R.ty='${t}';rec()">${t}</button>`).join('')}</div>`:''}
+ <div class="chips" style="padding:12px 0">${RNG.map(([d,n])=>`<button class="chip ${R.rg===d?'on':''}" onclick="R.rg=${d};rec()">${n}</button>`).join('')}</div>
+ ${s}</svg><div id="info" class="tg" style="margin-top:8px">點圖上的點看當次最強組</div><div class="tg">全期間最佳：${b?b.l+'（'+b.d.getFullYear()+'/'+md(b.d)+'）':'尚無紀錄'}${inv?'<br>輔助越輕越強，所以圖是反向的，點越高代表輔助越少。':''}</div></div>`}
+const TG={'死蟲式':'R2–3','鳥狗式':'R2–3','前鋸肌滾筒練習':'12–15','繩索脊椎旋轉':'8–12','彈力帶繩索脊椎旋轉':'8–12'},LB={};
+function lib(k,s){LB[k]={};s.split('/').forEach(p=>{const[pt,l]=p.split('=');LB[k][pt]=l.split(',').map(x=>{const[n,t]=x.split(':');TG[n]=TG[n]||t;return n})})}
+lib('g','胸=機械式胸推:8–10,啞鈴上斜臥推 45°:4–8,蝴蝶機夾胸:4–8,單臂啞鈴臥推:4–8,槓鈴臥推:4–8/背=輔助引體向上:8–10,反握引體向上:R2–3,槓鈴俯身划船:4–8,半跪單臂繩索划船:4–8,單臂啞鈴划船:4–8,直臂下壓:4–8,啞鈴斜板趴姿划船:4–8/肩前束=站姿槓鈴肩推:8–15,機械肩推:8–15/肩中束=啞鈴側平舉:8–15,機械側平舉:8–15,繩索側平舉:8–15/肩後束=繩索面拉:8–15,站姿繩索後三角飛鳥:8–15,機械反向飛鳥:8–15/二頭=高位繩索彎舉:6–10,站姿直槓繩索彎舉:6–10,機械牧師彎舉:6–10/三頭=窄握推:4–8,單臂三頭下壓:4–8,啞鈴三頭碎顱:4–8,機械三頭伸展:4–8/股四頭=啞鈴保加利亞分腿蹲:6–10,腿推舉:6–10/腿後肌與臀=手扶單腿啞鈴羅馬尼亞硬舉:6–10,槓鈴羅馬尼亞硬舉:6–10');
+lib('h','胸=彈力帶胸推:8–10,伏地挺身:R2–3,彈力帶飛鳥:8–10,彈力帶站姿斜上推:4–8,墊腳伏地挺身:R2–3,彈力帶夾胸:4–8,單臂彈力帶胸推:4–8,彈力帶臥推:4–8/背=彈力帶下拉:8–10,彈力帶划船:8–10,彈力帶俯身划船:4–8,彈力帶半跪單臂划船:4–8,彈力帶單臂划船:4–8,彈力帶直臂下壓:4–8/肩前束=彈力帶站姿肩推:8–15,彈力帶前平舉:8–15/肩中束=彈力帶側平舉:8–15,單臂固定點側平舉:8–15/肩後束=彈力帶面拉:8–15,彈力帶站姿後三角飛鳥:8–15/二頭=站姿彎舉:6–10,錘式彎舉:6–10,高位彎舉:6–10/三頭=彈力帶下壓:4–8,過頭伸展:4–8,彈力帶伏地挺身（窄距）:4–8,彈力帶三頭肌伸展（躺姿）:4–8/股四頭=保加利亞分腿蹲:R2–3,彈力帶弓箭步蹲:R2–3/腿後肌與臀=慢速深蹲:6–10,單腳臀橋:R2–3');
+const D=(a,b,c,d)=>({t:1,g:{s:a,a:b.split(',').map(n=>({n}))},h:{s:c,a:d.split(',').map(n=>({n}))}});
+const H3='彈力帶站姿肩推,彈力帶前平舉,站姿彎舉,高位彎舉,過頭伸展,彈力帶下壓';
+var PL=[D('死蟲式','機械式胸推,啞鈴上斜臥推 45°,蝴蝶機夾胸,啞鈴保加利亞分腿蹲,繩索面拉,站姿繩索後三角飛鳥','死蟲式','彈力帶胸推,彈力帶站姿斜上推,彈力帶夾胸,保加利亞分腿蹲,彈力帶面拉,彈力帶站姿後三角飛鳥'),
+ D('鳥狗式','輔助引體向上,啞鈴斜板趴姿划船,半跪單臂繩索划船,手扶單腿啞鈴羅馬尼亞硬舉,啞鈴側平舉,機械側平舉','鳥狗式','彈力帶下拉,彈力帶直臂下壓,彈力帶划船,單腳臀橋,彈力帶側平舉,單臂固定點側平舉'),
+ D('前鋸肌滾筒練習','站姿槓鈴肩推,機械肩推,高位繩索彎舉,機械牧師彎舉,窄握推,單臂三頭下壓','前鋸肌滾筒練習',H3),
+ D('繩索脊椎旋轉','單臂啞鈴臥推,槓鈴臥推,腿推舉,繩索面拉,機械反向飛鳥','彈力帶繩索脊椎旋轉','彈力帶臥推,彈力帶夾胸,保加利亞分腿蹲,彈力帶面拉,彈力帶站姿後三角飛鳥'),
+ D('鳥狗式','反握引體向上,單臂啞鈴划船,直臂下壓,槓鈴羅馬尼亞硬舉,啞鈴側平舉,機械側平舉','鳥狗式','彈力帶下拉,彈力帶划船,彈力帶直臂下壓,單腳臀橋,彈力帶側平舉,單臂固定點側平舉'),
+ D('前鋸肌滾筒練習','站姿槓鈴肩推,機械肩推,站姿直槓繩索彎舉,機械牧師彎舉,啞鈴三頭碎顱,機械三頭伸展','前鋸肌滾筒練習',H3),
+ {t:0,g:{s:'',a:[]},h:{s:'',a:[]}}];
+var PV='g',PD=0,ADD=new Set(),AQ='';
+const cur=()=>PL[PD][PV];
+function tgT(n,ov){if(ov){const r=ov.rmin||ov.rmax?`${ov.rmin}–${ov.rmax} 下`:'',i=ov.imin||ov.imax?`RIR ${ov.imin}–${ov.imax}`:'';return [`${ov.sets} 組`,r,i].filter(Boolean).join('・')+'（已改）'}
+ const t=TG[n]||'';return `2 組・`+(t[0]==='R'?'RIR '+t.slice(1):t+' 下')}
+function plan(){DET=0;document.body.classList.remove('det');
+ $('app').innerHTML=`<header>計劃</header><div class="seg" style="padding:12px 14px 0">${[['g','健身房'],['h','家中']].map(([k,n])=>`<button class="${PV===k?'on':''}" onclick="PV='${k}';plan()">${n}</button>`).join('')}</div>
+ ${PL.map((d,i)=>{const c=d[PV];return`<div class="row" onclick="pday(${i})"><span class="pill2">第${i+1}天</span><div>${d.t?'訓練日':'休息日'}${day===i+1?' <span class="pill" style="font-size:12px;padding:2px 8px">下一個</span>':''}<div class="sub2 pv">${d.t?(c.s?'伸展：'+c.s+'、':'')+c.a.map(a=>a.n).join('、'):'休息'}</div></div><div style="display:flex;flex-direction:column;gap:4px"><button class="mv" onclick="event.stopPropagation();mvd(${i},-1)">▲</button><button class="mv" onclick="event.stopPropagation();mvd(${i},1)">▼</button></div></div>`}).join('')}${tabs(1)}`}
+function mvd(i,d){const j=i+d;if(j<0||j>6)return;[PL[i],PL[j]]=[PL[j],PL[i]];plan();toast('已調整順序，進度數字不變')}
+function pday(i){PD=i;const d=PL[i],c=d[PV];
+ let b;
+ if(!d.t)b=`<p class="empty">休息日<br><small>動作清單已隱藏保留，改回訓練日就會出現</small></p>`;
+ else b=`<div class="seg" style="padding:12px 14px 0">${[['g','健身房版'],['h','家中版']].map(([k,n])=>`<button class="${PV===k?'on':''}" onclick="PV='${k}';pday(PD)">${n}</button>`).join('')}</div>
+ <div class="card"><div class="ch" onclick="pickS()"><div>伸展（置頂）<br><b>${c.s||'請選擇一個核心動作'}</b>${c.s?`<div class="sub2">${tgT(c.s)}</div>`:''}</div><span class="cnt">更換 ›</span></div></div>
+ ${c.a.map((a,k)=>`<div class="row" onclick="editA(${k})"><div>${a.n}<div class="sub2">${tgT(a.n,a.ov)}</div></div><div style="display:flex;gap:4px"><button class="mv" onclick="event.stopPropagation();mvA(${k},-1)">▲</button><button class="mv" onclick="event.stopPropagation();mvA(${k},1)">▼</button><button class="mv" style="color:var(--acc)" onclick="event.stopPropagation();delA(${k})">✕</button></div></div>`).join('')}
+ <div class="wrap"><button class="big" onclick="addUI()">新增動作</button></div>`;
+ $('app').innerHTML=`<header><button class="back" onclick="plan()">‹</button>第 ${i+1} 天<small>只影響之後新開始的訓練</small></header><div class="seg" style="padding:12px 14px 0">${[[1,'訓練日'],[0,'休息日']].map(([k,n])=>`<button class="${d.t===k?'on':''}" onclick="PL[PD].t=${k};pday(PD)">${n}</button>`).join('')}</div>${b}${tabs(1)}`}
+function mvA(k,d){const a=cur().a,j=k+d;if(j<0||j>=a.length)return;[a[k],a[j]]=[a[j],a[k]];pday(PD)}
+function delA(k){cur().a.splice(k,1);pday(PD);toast('已移除（動作庫不受影響）')}
+function pickS(){const o=['死蟲式','鳥狗式','前鋸肌滾筒練習',PV==='g'?'繩索脊椎旋轉':'彈力帶繩索脊椎旋轉'];sheet(`<p>伸展只能選核心類動作</p>${o.map(n=>`<button onclick="cur().s='${n}';$('sh').remove();pday(PD)">${n}</button>`).join('')}`)}
+function editA(k){const a=cur().a[k],t=TG[a.n]||'',ov=a.ov,r=ov?[ov.rmin,ov.rmax]:t[0]==='R'?['','']:t.split('–'),ri=ov?[ov.imin,ov.imax]:t[0]==='R'?t.slice(1).split('–'):['',''];
+ const g=(l,i,x)=>`<label class="fl2">${l}<span class="rg"><input id="${i}1" inputmode="numeric" value="${x[0]}">～<input id="${i}2" inputmode="numeric" value="${x[1]}"></span></label>`;
+ sheet(`<p>${a.n}・目標（沒改就用動作庫預設）</p><label class="fl2">組數<span class="rg"><input id="es" inputmode="numeric" value="${ov?ov.sets:2}"></span></label>${g('次數範圍','er',r)}${g('RIR 範圍','ei',ri)}<div class="acts"><button onclick="saveA(${k})">儲存</button><button onclick="cur().a[${k}].ov=null;shc('已恢復預設');pday(PD)">恢復預設</button></div>`)}
+function saveA(k){const v=i=>$(i).value;cur().a[k].ov={sets:v('es'),rmin:v('er1'),rmax:v('er2'),imin:v('ei1'),imax:v('ei2')};shc('已儲存');pday(PD)}
+function addUI(){ADD=new Set();AQ='';sheet(`<p>從動作庫挑選（${PV==='g'?'場地含健身房':'場地含家中'}），可多選</p><input class="note" style="margin:0 0 6px" placeholder="搜尋動作名稱" oninput="AQ=this.value;addList()"><div id="al" style="max-height:42vh;overflow:auto"></div><div class="acts"><button onclick="addDone()">加入（<span id="ac">0</span>）</button><button onclick="$('sh').remove()">取消</button></div>`);addList()}
+function addList(){const have=cur().a.map(a=>a.n);let h='';for(const p in LB[PV]){const l=LB[PV][p].filter(n=>!have.includes(n)&&n.includes(AQ.trim()));if(l.length)h+=`<div class="grp">${p}</div>`+l.map(n=>`<button class="pk" onclick="tgl(this,'${n}')"><span>${n}</span><span>${ADD.has(n)?'✓':''}</span></button>`).join('')}$('al').innerHTML=h||'<p>沒有符合的動作</p>';$('ac').textContent=ADD.size}
+function tgl(b,n){ADD.has(n)?ADD.delete(n):ADD.add(n);addList()}
+function addDone(){const n=ADD.size;[...ADD].forEach(x=>cur().a.push({n:x}));shc(`已加入 ${n} 個動作`);pday(PD)}
+const PO=['胸','背','肩前束','肩中束','肩後束','二頭','三頭','股四頭','腿後肌與臀','核心'],MM={c:'打勾',k:'重量與次數（kg）',w:'僅次數（自重）',a:'加重與輔助皆可',b:'彈力帶（顏色）'},VL={g:'健身房',h:'家中',gh:'健身房、家中'};
+var ACT=[],LQ='',LF='all';
+(function(){const M={};['g','h'].forEach(k=>{for(const p in LB[k])LB[k][p].forEach(n=>{M[n]={n,part:p,v:k}})});
+ ['死蟲式','鳥狗式','前鋸肌滾筒練習'].forEach(n=>M[n]={n,part:'核心',v:'gh'});M['繩索脊椎旋轉']={n:'繩索脊椎旋轉',part:'核心',v:'g'};M['彈力帶繩索脊椎旋轉']={n:'彈力帶繩索脊椎旋轉',part:'核心',v:'h'};
+ PO.forEach(p=>Object.values(M).filter(a=>a.part===p).forEach(a=>{const n=a.n;a.m=['死蟲式','鳥狗式','前鋸肌滾筒練習'].includes(n)?'c':['輔助引體向上','反握引體向上'].includes(n)?'a':['伏地挺身','墊腳伏地挺身','保加利亞分腿蹲','單腳臀橋'].includes(n)?'w':a.v==='h'?'b':'k';a.b0=n==='彈力帶弓箭步蹲';a.hist=!['啞鈴斜板趴姿划船','單臂固定點側平舉','彈力帶繩索脊椎旋轉'].includes(n);a.off=false;ACT.push(a)}))})();
+const tgL=a=>tgT(a.n,a.ov).replace('（已改）','');
+function libp(){DET=0;document.body.classList.remove('det');
+ $('app').innerHTML=`<header>動作庫</header><div class="wrap" style="padding-top:12px"><input class="note" style="margin:0" placeholder="搜尋動作名稱" value="${LQ}" oninput="LQ=this.value;ll()"></div><div class="seg" style="padding:10px 14px 0">${[['all','全部'],['g','健身房'],['h','家中']].map(([k,n])=>`<button class="${LF===k?'on':''}" onclick="LF='${k}';libp()">${n}</button>`).join('')}</div><div id="ll"></div><button class="fab" onclick="editL(-1)">＋ 新增動作</button>${tabs(2)}`;ll()}
+function ll(){const ok=a=>a.n.includes(LQ.trim())&&(LF==='all'||a.v.includes(LF));let h='';
+ PO.forEach(p=>{const l=ACT.map((a,i)=>[a,i]).filter(([a])=>a.part===p&&!a.off&&ok(a));if(l.length)h+=`<div class="grp" style="padding:12px 18px 2px">${p}</div>`+l.map(([a,i])=>`<div class="row" onclick="editL(${i})"><div>${a.n}<div class="sub2">${VL[a.v]}・${MM[a.m]}${a.b0?'（含「無」）':''}・${tgL(a)}</div></div><span>›</span></div>`).join('')});
+ const off=ACT.map((a,i)=>[a,i]).filter(([a])=>a.off&&ok(a));
+ if(off.length)h+=`<div class="grp" style="padding:18px 18px 2px">已移除（歷史紀錄保留）</div>`+off.map(([a,i])=>`<div class="row"><div>${a.n}<div class="sub2">${a.part}・${VL[a.v]}</div></div><button class="pill" onclick="ACT[${i}].off=false;ll();toast('已恢復')">恢復</button></div>`).join('');
+ $('ll').innerHTML=(h||'<p class="empty">沒有符合的動作</p>')+'<div style="height:70px"></div>'}
+function planUse(n,k){const o=[];PL.forEach((d,i)=>{const c=d[k];if(c.s===n||c.a.some(a=>a.n===n))o.push([k,i])});return o}
+function warn(msg,u){const s=$('sh');if(s)s.remove();sheet(`<p>${msg}</p>${u.map(([k,i])=>`<button onclick="$('sh').remove();PV='${k}';pday(${i})">前往第 ${i+1} 天（${k==='g'?'健身房版':'家中版'}）修改</button>`).join('')}<button onclick="$('sh').remove()">取消</button>`)}
+function editL(i){const a=i<0?{n:'',part:'胸',v:'g',m:'k',b0:false,hist:false}:ACT[i],t=TG[a.n]||'',ov=a.ov,r=ov?[ov.rmin,ov.rmax]:t[0]==='R'||!t?['','']:t.split('–'),ri=ov?[ov.imin,ov.imax]:t[0]==='R'?t.slice(1).split('–'):['',''];
+ const op=(o,v)=>Object.entries(o).map(([k,n])=>`<option value="${k}" ${k===v?'selected':''}>${n}</option>`).join(''),g=(l,id,x)=>`<label class="fl2">${l}<span class="rg"><input id="${id}1" inputmode="numeric" value="${x[0]}">～<input id="${id}2" inputmode="numeric" value="${x[1]}"></span></label>`;
+ const s=$('sh');if(s)s.remove();
+ sheet(`<p>${i<0?'新增動作':'編輯動作'}</p><label class="fl2">名稱<input id="lN" value="${a.n}"></label><label class="fl2">部位<select id="lP">${PO.map(p=>`<option ${p===a.part?'selected':''}>${p}</option>`).join('')}</select></label><label class="fl2">場地<select id="lV">${op(VL,a.v)}</select></label><label class="fl2">記錄方式<select id="lM" ${a.hist?'disabled':''} onchange="$('lB').style.display=this.value==='b'?'flex':'none'">${op(MM,a.m)}</select></label>${a.hist?'<div class="lk">已有歷史紀錄，記錄方式不能改。要換請新增一個動作。</div>':''}<label class="fl2" id="lB" style="display:${a.m==='b'?'flex':'none'}">可選「不加彈力帶」<input id="lC" type="checkbox" style="width:24px;height:24px" ${a.b0?'checked':''}></label><div class="grp">預設目標（計劃裡沒個別改就用這裡）</div><label class="fl2">組數<span class="rg"><input id="ls" inputmode="numeric" value="${ov?ov.sets:2}"></span></label>${g('次數範圍','lr',r)}${g('RIR 範圍','li',ri)}<div class="acts"><button onclick="saveL(${i})">儲存</button>${i<0?'':`<button style="color:var(--acc)" onclick="rmL(${i})">從選單移除</button>`}<button onclick="$('sh').remove()">取消</button></div>`)}
+function saveL(i){const v=x=>$(x).value,n=v('lN').trim();if(!n)return toast('請輸入名稱');
+ if(ACT.some((a,j)=>j!==i&&a.n===n))return toast('名稱已存在，不能重複');
+ const nv=v('lV'),old=i<0?null:ACT[i];
+ if(old){const u=[];['g','h'].forEach(k=>{if(old.v.includes(k)&&!nv.includes(k))u.push(...planUse(old.n,k))});if(u.length)return warn('改成這個場地後，這個動作仍在下列計劃裡，請先到計劃處理：',u)}
+ const o={n,part:v('lP'),v:nv,m:v('lM'),b0:v('lM')==='b'&&$('lC').checked,hist:old?old.hist:false,off:false,ov:{sets:v('ls'),rmin:v('lr1'),rmax:v('lr2'),imin:v('li1'),imax:v('li2')}};
+ if(old&&old.n!==n){PL.forEach(d=>['g','h'].forEach(k=>{if(d[k].s===old.n)d[k].s=n;d[k].a.forEach(a=>{if(a.n===old.n)a.n=n})}));TG[n]=TG[old.n]}
+ if(i<0)ACT.push(o);else ACT[i]=o;$('sh').remove();libp();toast('已儲存')}
+function rmL(i){const a=ACT[i],u=[];['g','h'].forEach(k=>{if(a.v.includes(k))u.push(...planUse(a.n,k))});
+ if(u.length)return warn('這個動作在下列計劃裡，請先到計劃移除，再回來移除：',u);
+ a.off=true;$('sh').remove();libp();toast('已從選單移除，歷史保留')}
+var THEME='s',LASTX=new Date(T0),SNZ=null,NEWK=new Set();
+const fd=d=>`${d.getFullYear()}/${md(d)}`,ago=()=>Math.floor((T0-LASTX)/864e5);
+function bk(){const d=ago();if(d<30||(SNZ&&SNZ>T0))return'';return`<div class="card" style="border-color:var(--acc)"><div class="body" style="padding-top:12px"><div>已 ${d} 天沒匯出備份</div><div class="tg">資料只存在這支手機，建議現在匯出。</div><div class="acts"><button onclick="expo()">立即匯出</button><button onclick="SNZ=new Date(T0.getTime()+6048e5);today()">一週後再提醒</button></div></div></div>`}
+function rf(){$('app').innerHTML.includes('id="stg"')?stg():today()}
+function cl(){const s=$('sh');if(s)s.remove()}
+function expo(){cl();sheet(`<p>匯出檔案：健身記錄_${T0.getFullYear()}-${String(T0.getMonth()+1).padStart(2,'0')}-${String(T0.getDate()).padStart(2,'0')}</p><button onclick="LASTX=new Date(T0);shc('已匯出（原型模擬）');rf()">分享：AirDrop 或存到「檔案」</button><button onclick="cl()">取消</button>`)}
+function impo(){cl();sheet(`<p>從「檔案」App 選擇檔案（原型模擬四種情況）</p><button onclick="cl();sheet('<p>匯入會覆蓋目前所有資料，無法復原。要繼續嗎？</p><div class=&quot;acts&quot;><button style=&quot;color:var(--acc)&quot; onclick=&quot;shc(\'已匯入（原型不會真的改資料）\')&quot;>覆蓋匯入</button><button onclick=&quot;cl()&quot;>取消</button></div>')">正確的備份檔</button>${[['不是這個 App 的備份檔','不是這個 App 的備份檔'],['檔案損毀','檔案損毀，無法讀取'],['備份檔版本較新','備份檔版本比目前的 App 新，請先更新 App']].map(([a,b])=>`<button onclick="cl();sheet('<p>匯入失敗：${b}。現有資料沒有變動。</p><button onclick=&quot;cl()&quot;>知道了</button>')">${a}</button>`).join('')}<button onclick="cl()">取消</button>`)}
+function theme(k){THEME=k;const r=document.documentElement;k==='s'?r.removeAttribute('data-theme'):r.setAttribute('data-theme',k==='l'?'light':'dark');stg()}
+function nm(t,i){cl();const o=t==='k'?KINDS:PO;sheet(`<p>${t==='k'?'有氧種類':'部位'}${i<0?'新增':'改名'}</p><label class="fl2">名稱<input id="nmI" value="${i<0?'':o[i]}"></label><div class="acts"><button onclick="nmS('${t}',${i})">儲存</button><button onclick="cl()">取消</button></div>`)}
+function nmS(t,i){const o=t==='k'?KINDS:PO,n=$('nmI').value.trim();if(!n)return toast('請輸入名稱');if(o.some((x,j)=>j!==i&&x===n))return toast('名稱已存在');
+ if(i<0){o.push(n);if(t==='k')NEWK.add(n)}else{const old=o[i];o[i]=n;if(t==='p'){ACT.forEach(a=>{if(a.part===old)a.part=n});for(const k in LB)if(LB[k][old]){LB[k][n]=LB[k][old];delete LB[k][old]}}else if(NEWK.has(old)){NEWK.delete(old);NEWK.add(n)}}
+ cl();stg();toast('已儲存')}
+function nmD(t,i){const o=t==='k'?KINDS:PO,n=o[i];let c=0,msg='';
+ if(t==='p'){c=ACT.filter(a=>a.part===n).length;msg=`「${n}」有 ${c} 個動作在用，不能刪除。請先到動作庫把這些動作改到別的部位。`}
+ else if(!NEWK.has(n)){c=1;msg=`「${n}」有有氧紀錄在用，不能刪除，可以改名。`}
+ if(c){cl();return sheet(`<p>${msg}</p><button onclick="cl()">知道了</button>`)}
+ o.splice(i,1);NEWK.delete(n);stg();toast('已刪除')}
+function rs(t,s){cl();const a=t==='r'?'清除所有訓練與有氧紀錄，動作庫與計劃保留':'把動作庫、計劃、紀錄全部還原成初始資料';
+ sheet(s?`<p>再確認一次：${a}，無法復原。</p><div class="acts"><button style="color:var(--acc)" onclick="shc('已完成（原型不會真的清除）')">確定執行</button><button onclick="cl()">取消</button></div>`:`<p>${a}。要繼續嗎？</p><div class="acts"><button onclick="rs('${t}',1)">繼續</button><button onclick="cl()">取消</button></div>`)}
+function lst(t){const o=t==='k'?KINDS:PO;return o.map((n,i)=>`<div class="row" style="padding:8px 2px;cursor:default"><div>${n}</div><button class="mv" onclick="nm('${t}',${i})">✎</button><button class="mv" style="color:var(--acc)" onclick="nmD('${t}',${i})">✕</button></div>`).join('')+`<button class="chip" style="margin-top:8px" onclick="nm('${t}',-1)">＋ 新增</button>`}
+function stg(){DET=0;document.body.classList.remove('det');const c=h=>`<div class="card"><div class="body" style="padding-top:12px">${h}</div></div>`,g=t=>`<div class="grp" style="padding:14px 18px 0">${t}</div>`;
+ $('app').innerHTML=`<header>設定</header><div id="stg"></div>${g('資料備份')}${c(`<div>上次匯出：${fd(LASTX)}（${ago()} 天前）</div><div class="tg">超過 30 天沒匯出會提醒</div><div class="acts"><button onclick="expo()">匯出</button><button onclick="impo()">匯入</button></div>`)}
+ ${g('訓練進度')}${c(`<label class="fl2">下一個要練<select onchange="day=+this.value;toast('已改成第 '+day+' 天')">${[1,2,3,4,5,6,7].map(n=>`<option value="${n}" ${n===day?'selected':''}>第 ${n} 天</option>`).join('')}</select></label>`)}
+ ${g('外觀')}${c(`<div class="seg">${[['s','跟隨系統'],['l','淺色'],['d','深色']].map(([k,n])=>`<button class="${THEME===k?'on':''}" onclick="theme('${k}')">${n}</button>`).join('')}</div>`)}
+ ${g('有氧種類')}${c(lst('k'))}${g('部位')}${c(lst('p'))}
+ ${g('彈力帶顏色（不可修改）')}${c(`<div class="sw">${Object.keys(COL).map(k=>`<button style="background:${COL[k]}">${k}</button>`).join('')}</div>`)}
+ ${g('重置')}${c(`<div class="acts"><button style="color:var(--acc)" onclick="rs('r')">清除紀錄</button><button style="color:var(--acc)" onclick="rs('a')">還原初始資料</button></div>`)}
+ ${g('關於')}${c(`<div>版本：原型 0.1</div><div class="tg">訓練 ${SESS.length} 筆・有氧 ${CARDIO.length} 筆・動作 ${ACT.filter(a=>!a.off).length} 個<br>上次匯出：${fd(LASTX)}</div>`)}<div style="height:70px"></div>${tabs(4)}`}
+const IMF=['不是這個 App 的備份檔','檔案損毀，無法讀取','備份檔版本比目前的 App 新，請先更新 App'];
+function impoOK(){cl();sheet(`<p>匯入會覆蓋目前所有資料，無法復原。要繼續嗎？</p><div class="acts"><button style="color:var(--acc)" onclick="shc('已匯入（原型不會真的改資料）')">覆蓋匯入</button><button onclick="cl()">取消</button></div>`)}
+function impoF(i){cl();sheet(`<p>匯入失敗：${IMF[i]}。現有資料沒有變動。</p><button onclick="cl()">知道了</button>`)}
+function impo(){cl();sheet(`<p>從「檔案」App 選擇檔案（原型模擬四種情況）</p><button onclick="impoOK()">正確的備份檔</button><button onclick="impoF(0)">不是這個 App 的檔案</button><button onclick="impoF(1)">損毀的檔案</button><button onclick="impoF(2)">版本較新的備份檔</button><button onclick="cl()">取消</button>`)}
+var TS=new Set(),TQ='';const MPM={c:'c',k:'g',w:'w',a:'a',b:'b'};
+function rmx(e){list.splice(e,1);train();toast('已移除')}
+function addT(){cl();TS=new Set();TQ='';sheet(`<p>加練動作（只影響這次，不改計劃）</p><input class="note" style="margin:0 0 6px" placeholder="搜尋動作名稱" oninput="TQ=this.value;tl()"><div id="tl" style="max-height:42vh;overflow:auto"></div><div class="acts"><button onclick="tdone()">加入（<span id="tc">0</span>）</button><button onclick="cl()">取消</button></div>`);tl()}
+function tl(){const k=ver==='gym'?'g':'h',have=list.map(o=>o.name);let h='';PO.forEach(p=>{const l=ACT.filter(a=>!a.off&&a.part===p&&a.v.includes(k)&&!have.includes(a.n)&&a.n.includes(TQ.trim()));if(l.length)h+=`<div class="grp">${p}</div>`+l.map((a,i)=>`<button class="pk" onclick="tt(${ACT.indexOf(a)})"><span>${a.n}</span><span>${TS.has(a.n)?'✓':''}</span></button>`).join('')});$('tl').innerHTML=h||'<p>沒有可加的動作</p>';$('tc').textContent=TS.size}
+function tt(i){const n=ACT[i].n;TS.has(n)?TS.delete(n):TS.add(n);tl()}
+function tdone(){const c=TS.size;[...TS].forEach(n=>{const a=ACT.find(x=>x.n===n),t=TG[n]||'',o={name:n,part:a.part,mode:MPM[a.m],n:2,extra:true};if(t[0]==='R')o.rir=t.slice(1);else if(t)o.reps=t;list.push(mk(o))});cl();train();toast(`已加入 ${c} 個動作，只影響這次`)}
+var CARDS=[];const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+function cardL(){const l=CARDS.filter(c=>c.d===fd(date));return l.length?`<div class="grp" style="padding:16px 18px 0">這天已記錄的有氧</div>`+l.map(c=>`<div class="row" style="cursor:default"><div>${c.k}<div class="sub2">${c.t||'只記種類'}${c.note?'・'+c.note:''}</div></div></div>`).join(''):''}
+function addC(){DET=0;const f=(l,id,ph,u)=>`<label class="fl2">${l}<span class="rg"><input id="${id}" inputmode="decimal" placeholder="${ph}">${u}</span></label>`;
+ $('app').innerHTML=`<header><button class="back" onclick="today()">‹</button>新增有氧<small>種類必選，其他可空白</small></header><div class="wrap" style="padding-top:12px"><label class="fl2">日期<input id="cD" type="date" value="${iso(date)}"></label><label class="fl2">種類<select id="cK"><option value="">請選擇</option>${KINDS.map(k=>`<option>${k}</option>`).join('')}</select></label><label class="fl2">時間<span class="rg"><input id="cH" inputmode="numeric" placeholder="時">時<input id="cM" inputmode="numeric" placeholder="分">分</span></label>${f('距離','cL','km','km')}${f('平均心率','cB','','')}${f('消耗熱量','cC','kcal','')}<input class="note" id="cN" placeholder="備註"><button class="big" style="margin-top:20px" onclick="saveC()">儲存</button><button class="big" style="background:none;color:var(--ink);border:2px solid var(--soft);box-shadow:none;margin-top:0" onclick="today()">取消</button></div>`}
+function saveC(){const v=i=>$(i).value.trim(),k=v('cK');if(!k)return toast('請先選擇種類');
+ const h=v('cH'),m=v('cM'),t=[h||m?`${h?h+' 時 ':''}${m||0} 分`:'',v('cL')&&v('cL')+' km',v('cB')&&'平均 '+v('cB'),v('cC')&&v('cC')+' kcal'].filter(Boolean).join('、');
+ CARDS.push({d:fd(new Date(v('cD')+'T00:00')),k,t,note:v('cN')});today();toast('已儲存')}
+var SESS=[],CARDIO=[],LASTDONE='',LIVE=false,SD='',SDAY=1;
+const em=a=>a.m==='k'?'g':a.m==='b'?(a.b0?'l':'b'):a.m;
+function mkSet(o){return{kg:o.last||'',reps:'',rir:'',type:o.type||'輔助',color:o.lastColor||'',ok:false}}
+function pv(e,x,t){const r=+x.reps||0;
+ if(e.m==='g')return x.kg===''?null:[+x.kg,r,`${+x.kg} kg × ${r}`];
+ if(e.m==='w')return[r,r,`${r} 下`];
+ if(e.m==='b'||e.m==='l'){const v=LV.indexOf(x.color);return v<0?null:[v,r,`${LV[v]} × ${r}`]}
+ if(x.type!==t)return null;
+ if(t==='純自重')return[r,r,`純自重 × ${r} 下`];
+ return x.kg===''?null:[+x.kg,r,`${t} ${t==='加重'?'+':''}${+x.kg} kg × ${r}`]}
+function ser(e,t){const o=[];SESS.slice().sort((a,b)=>a.date<b.date?-1:1).forEach(s=>s.ex.forEach(x=>{if(x.name!==e.n||x.skip)return;const inv=t==='輔助';let b=null;
+ x.sets.forEach(z=>{if(!full(x,z))return;const p=pv(e,z,t);if(p&&(!b||(inv?p[0]<b[0]:p[0]>b[0])||(p[0]===b[0]&&p[1]>b[1]))){b=p;b.x=z}});
+ if(b){const d=new Date(s.date+'T00:00');o.push({a:Math.round((T0-d)/864e5),d,v:b[0],r:b[1],l:b[2],x:b.x})}}));return o}
+function bestS(n,a){if(a.m==='c')return'';const e={n,m:em(a)};for(const t of(a.m==='a'?['加重','純自重','輔助']:[''])){const p=ser(e,t);if(p.length){const b=p[bestI(p,t==='輔助')];return`${b.l}（${md(b.d)}）`}}return''}
+function pre(n,a){const e={n,m:em(a)},o={};
+ if(a.m==='a'){let t='輔助';const h=SESS.filter(s=>s.ex.some(x=>x.name===n)).sort((x,y)=>x.date<y.date?-1:1);if(h.length){const ss=h[h.length-1].ex.find(x=>x.name===n).sets.filter(x=>x.type);if(ss.length)t=ss[ss.length-1].type}o.type=t;const p=ser(e,t);if(p.length&&t!=='純自重')o.last=String(p[p.length-1].x.kg)}
+ else{const p=ser(e,'');if(p.length){const x=p[p.length-1].x;if(a.m==='k')o.last=String(x.kg);if(a.m==='b')o.lastColor=x.color}}return o}
+function obj(n,pov){const a=ACT.find(x=>x.n===n);if(!a)return null;const ov=pov||a.ov,t=TG[n]||'',o=Object.assign({name:n,part:a.part,mode:MPM[a.m],b0:a.b0,n:ov?(+ov.sets||2):2,best:bestS(n,a)},pre(n,a));
+ if(ov){if(ov.rmin||ov.rmax)o.reps=`${ov.rmin}–${ov.rmax}`;if(ov.imin||ov.imax)o.rir=`${ov.imin}–${ov.imax}`}else if(t[0]==='R')o.rir=t.slice(1);else if(t)o.reps=t;return mk(o)}
+function start(v,e){if(LIVE)return toast('有未結束的訓練，請先繼續或結束');ver=v;SD=iso(date);SDAY=day;const d=PL[day-1],c=d[v==='gym'?'g':'h'];
+ list=e||!d.t?[]:[c.s&&obj(c.s)].concat(c.a.map(a=>obj(a.n,a.ov))).filter(Boolean);LIVE=true;train()}
+function typ(e,i,t){const o=list[e],s=o.sets[i];s.type=t;const p=ser({n:o.name,m:'a'},t);s.kg=t!=='純自重'&&p.length?String(p[p.length-1].x.kg):'';train()}
+function sub(e){const o=list[e],k=ver==='gym'?'g':'h',c=ACT.filter(a=>!a.off&&a.part===o.part&&a.v.includes(k)&&!list.some(x=>x.name===a.n));window._c=c;cl();sheet(`<p>同部位（${o.part}）、場地含健身房的動作</p>${c.map((a,i)=>`<button onclick="pick(${e},${i})">${a.n}</button>`).join('')||'<p>沒有可替換動作</p>'}`)}
+function pick(e,i){const x=window._c[i];list[e]=obj(x.n);cl();train();toast('已換成 '+x.n)}
+function tdone(){const c=TS.size;[...TS].forEach(n=>{const o=obj(n);if(o){o.extra=true;list.push(o)}});cl();train();toast(`已加入 ${c} 個動作，只影響這次`)}
+function end(){const ok=list.some(o=>!o.skip&&o.sets.some(s=>full(o,s)));
+ if(ok){const ex=list.filter(o=>!o.skip).map(o=>Object.assign({},o,{sets:o.sets.filter(s=>s.reps!==''||s.rir!==''||s.ok)})).filter(o=>o.sets.length);SESS.push({id:Date.now(),date:SD,day:SDAY,ver,ex})}
+ const adv=ok||SDAY===7;if(adv&&(!LASTDONE||SD>LASTDONE)){day=day%7+1;LASTDONE=SD}
+ list=[];LIVE=false;toast(ok?'已儲存，進到第 '+day+' 天':adv?'已完成休息日，進到第 '+day+' 天':'沒有完整填完的組，這次不存，進度不動');today()}
+function finishRest(){const d=iso(date);if(!LASTDONE||d>LASTDONE){day=day%7+1;LASTDONE=d}toast('已完成休息日，進到第 '+day+' 天');today()}
+function bk(){let h='';if(LIVE)h+=`<div class="card" style="border-color:var(--acc)"><div class="body" style="padding-top:12px"><div>有未結束的訓練（${SD.slice(5).replace('-','/')}・第 ${SDAY} 天）</div><div class="acts"><button onclick="train()">繼續</button><button onclick="end()">放棄並開始新的</button></div></div></div>`;
+ const d=ago();if(d>=30&&!(SNZ&&SNZ>T0))h+=`<div class="card" style="border-color:var(--acc)"><div class="body" style="padding-top:12px"><div>已 ${d} 天沒匯出備份</div><div class="tg">資料只存在這支手機，建議現在匯出。</div><div class="acts"><button onclick="expo()">立即匯出</button><button onclick="SNZ=new Date(T0.getTime()+6048e5);today()">一週後再提醒</button></div></div></div>`;return h}
+const ct=c=>[c.h||c.m?`${c.h?c.h+' 時 ':''}${c.m||0} 分`:'',c.km&&c.km+' km',c.bpm&&'平均 '+c.bpm,c.kcal&&c.kcal+' kcal'].filter(Boolean).join('、');
+function cardL(){const l=CARDIO.filter(c=>c.d===iso(date));return l.length?`<div class="grp" style="padding:16px 18px 0">這天已記錄的有氧</div>`+l.map(c=>`<div class="row" style="cursor:default"><div>${c.k}<div class="sub2">${ct(c)||'只記種類'}${c.note?'・'+c.note:''}</div></div></div>`).join(''):''}
+function saveC(){const v=i=>$(i).value.trim(),k=v('cK');if(!k)return toast('請先選擇種類');CARDIO.push({id:Date.now(),d:v('cD'),k,h:v('cH'),m:v('cM'),km:v('cL'),bpm:v('cB'),kcal:v('cC'),note:v('cN')});today();toast('已儲存')}
+function rows(){let h='';const m=R.mon,dsc=(a,b)=>a.date<b.date?1:-1;
+ if(R.tab==='w')SESS.filter(s=>s.date.slice(0,7)===m).sort(dsc).forEach(s=>{const d=new Date(s.date+'T00:00');h+=`<div class="row" onclick="openS(${s.id})"><span class="pill2">${md(d)}</span><div>${DAYS[s.day-1]}・${s.ver==='gym'?'健身房版':'家中版'}<div class="sub2">星期${WK[d.getDay()]}・完成 ${s.ex.length} 個動作</div></div><span>›</span></div>`});
+ else CARDIO.filter(c=>c.d.slice(0,7)===m).sort((a,b)=>a.d<b.d?1:-1).forEach(c=>{h+=`<div class="row" onclick="openC(${c.id})"><span class="pill2">${md(new Date(c.d+'T00:00'))}</span><div>${c.k}<div class="sub2">${ct(c)||'只記種類'}</div></div><span>›</span></div>`});
+ return h||'<p class="empty">這個月沒有紀錄</p>'}
+function openS(id){if(LIVE)return toast('請先結束進行中的訓練');const s=SESS.find(x=>x.id===id);R.sid=id;DET=1;ver=s.ver;list=s.ex;detail()}
+function detail(){const s=SESS.find(x=>x.id===R.sid);document.body.classList.add('det');$('app').innerHTML=`<header><button class="back" onclick="rec()">‹</button>${s.date.slice(5).replace('-','/')}・${DAYS[s.day-1]}<small>${ver==='gym'?'健身房版':'家中版'}・可直接修改</small></header>${list.map(card).join('')}<div class="bar"><button class="big" style="background:var(--acc);box-shadow:0 4px 0 #a73f00" onclick="delW()">刪除這筆訓練</button></div>`}
+function delW(){cl();sheet(`<p>刪除這筆訓練？不會改變「下一個要練第幾天」，最佳一次與趨勢圖會重新計算。</p><div class="acts"><button style="color:var(--acc)" onclick="SESS=SESS.filter(x=>x.id!==R.sid);cl();rec();toast('已刪除這筆訓練')">刪除</button><button onclick="cl()">取消</button></div>`)}
+function openC(id){const c=CARDIO.find(x=>x.id===id);cl();const f=(l,i,v)=>`<label class="fl2">${l}<input id="${i}" inputmode="decimal" value="${v}"></label>`;
+ sheet(`<p>${c.d.slice(5).replace('-','/')}・修改有氧</p><label class="fl2">種類<select id="eK">${KINDS.map(k=>`<option ${k===c.k?'selected':''}>${k}</option>`).join('')}</select></label>${f('時','eH',c.h)}${f('分','eM',c.m)}${f('距離（km）','eL',c.km)}${f('平均心率','eB',c.bpm)}${f('消耗熱量','eC',c.kcal)}<div class="acts"><button onclick="upC(${id})">儲存</button><button style="color:var(--acc)" onclick="CARDIO=CARDIO.filter(x=>x.id!==${id});cl();rec();toast('已刪除')">刪除</button></div>`)}
+function upC(id){const c=CARDIO.find(x=>x.id===id),v=i=>$(i).value.trim();Object.assign(c,{k:v('eK'),h:v('eH'),m:v('eM'),km:v('eL'),bpm:v('eB'),kcal:v('eC')});cl();rec();toast('已儲存')}
+function refreshEXL(){EXL.length=0;ACT.forEach(a=>{if(a.m!=='c'&&SESS.some(s=>s.ex.some(o=>o.name===a.n)))EXL.push({n:a.n,p:a.part,m:em(a)})})}
+function res(){refreshEXL();const q=R.q.trim(),l=EXL.map((e,i)=>[e,i]).filter(([e])=>e.n.includes(q));
+ $('res').innerHTML=l.map(([e,i])=>`<div class="row" style="padding-left:0;padding-right:0" onclick="R.ex=${i};R.view='chart';rec()"><span class="pill2">${e.p}</span><div>${e.n}</div><span>›</span></div>`).join('')||'<p class="empty">還沒有可看的動作紀錄</p>'}
+const ST=()=>({PL,ACT,KINDS,PO,TG,LB,day,SESS,CARDIO,LASTDONE,LASTX,SNZ,THEME,NEWK:[...NEWK],LIVE,SD,SDAY,ver,list});
+function sv(){try{localStorage.setItem('sport_v1',JSON.stringify(ST()))}catch(e){}}
+function expo(){const n=`健身記錄_${iso(T0)}.json`,f=new File([JSON.stringify({app:'sport',v:1,data:ST()})],n,{type:'application/json'});LASTX=new Date(T0);sv();
+ if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f]}).catch(()=>{});else{const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=n;a.click()}toast('已匯出');rf()}
+function bad(m){cl();sheet(`<p>匯入失敗：${m}。現有資料沒有變動。</p><button onclick="cl()">知道了</button>`)}
+function impo(){cl();sheet(`<p>選擇備份檔（.json）</p><input type="file" accept=".json,application/json" onchange="impF(this.files[0])" style="width:100%;margin:8px 0"><button onclick="cl()">取消</button>`)}
+function impF(f){if(!f)return;const r=new FileReader();r.onload=()=>{let o;try{o=JSON.parse(r.result)}catch(e){return bad('檔案損毀，無法讀取')}
+ if(!o||o.app!=='sport'||!o.data)return bad('不是這個 App 的備份檔');if(o.v>1)return bad('備份檔版本比目前 App 新，請先更新 App');
+ cl();sheet(`<p>匯入會覆蓋目前所有資料，無法復原。要繼續嗎？</p><div class="acts"><button style="color:var(--acc)" id="okI">覆蓋匯入</button><button onclick="cl()">取消</button></div>`);$('okI').onclick=()=>{localStorage.setItem('sport_v1',JSON.stringify(o.data));location.reload()}};r.readAsText(f)}
+function rs(t,s){cl();const a=t==='r'?'清除所有訓練與有氧紀錄，動作庫與計劃保留':'把動作庫、計劃、紀錄全部還原成初始資料';sheet(s?`<p>再確認一次：${a}，無法復原。</p><div class="acts"><button style="color:var(--acc)" onclick="doRs('${t}')">確定執行</button><button onclick="cl()">取消</button></div>`:`<p>${a}。要繼續嗎？</p><div class="acts"><button onclick="rs('${t}',1)">繼續</button><button onclick="cl()">取消</button></div>`)}
+function doRs(t){if(t==='a')localStorage.removeItem('sport_v1');else{SESS=[];CARDIO=[];LASTDONE='';LIVE=false;list=[];day=1;sv()}location.reload()}
+(function(){try{const s=JSON.parse(localStorage.getItem('sport_v1')||'null');if(!s)return;
+ PL=s.PL;ACT=s.ACT;KINDS.splice(0,9e9,...s.KINDS);PO.splice(0,9e9,...s.PO);for(const k in TG)delete TG[k];Object.assign(TG,s.TG);for(const k in LB)delete LB[k];Object.assign(LB,s.LB);
+ day=s.day;SESS=s.SESS;CARDIO=s.CARDIO;LASTDONE=s.LASTDONE;LASTX=new Date(s.LASTX);SNZ=s.SNZ?new Date(s.SNZ):null;NEWK=new Set(s.NEWK);LIVE=s.LIVE;SD=s.SD;SDAY=s.SDAY;ver=s.ver;list=s.list;THEME=s.THEME;
+ if(THEME!=='s')document.documentElement.setAttribute('data-theme',THEME==='l'?'light':'dark')}catch(e){}})();
+setInterval(sv,1500);addEventListener('pagehide',sv);document.addEventListener('visibilitychange',sv);
+
+today();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
+</script>
+</body>
+</html>
