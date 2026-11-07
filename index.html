@@ -325,7 +325,7 @@ function stg(){DET=0;document.body.classList.remove('det');const c=h=>`<div clas
  ${g('有氧種類')}${c(lst('k'))}${g('部位')}${c(lst('p'))}
  ${g('彈力帶顏色（不可修改）')}${c(`<div class="sw">${Object.keys(COL).map(k=>`<button style="background:${COL[k]}">${k}</button>`).join('')}</div>`)}
  ${g('休息計時')}${c(`<label class="fl2">自動計時（填完一組就開始）<input type="checkbox" style="width:24px;height:24px" ${RTON?'checked':''} onchange="RTON=this.checked;if(!RTON)RTS=0;toast(RTON?'休息計時已開啟':'休息計時已關閉')"></label>`)}${g('重置')}${c(`<div class="acts"><button style="color:var(--acc)" onclick="rs('r')">清除紀錄</button><button style="color:var(--acc)" onclick="rs('a')">還原初始資料</button></div>`)}
- ${g('關於')}${c(`<div>版本：原型 0.1</div><div class="tg">訓練 ${SESS.length} 筆・有氧 ${CARDIO.length} 筆・動作 ${ACT.filter(a=>!a.off).length} 個<br>上次匯出：${fd(LASTX)}</div>`)}<div style="height:70px"></div>${tabs(4)}`}
+ ${g('關於')}${c(`<div>版本：原型 0.1</div><div class="tg">訓練 ${SESS.length} 筆・有氧 ${CARDIO.length} 筆・動作 ${ACT.filter(a=>!a.off).length} 個<br>上次匯出：${fd(LASTX)}<br>已用儲存空間：${usage()}</div>`)}<div style="height:70px"></div>${tabs(4)}`}
 const IMF=['不是這個 App 的備份檔','檔案損毀，無法讀取','備份檔版本比目前的 App 新，請先更新 App'];
 function impoOK(){cl();sheet(`<p>匯入會覆蓋目前所有資料，無法復原。要繼續嗎？</p><div class="acts"><button style="color:var(--acc)" onclick="shc('已匯入（原型不會真的改資料）')">覆蓋匯入</button><button onclick="cl()">取消</button></div>`)}
 function impoF(i){cl();sheet(`<p>匯入失敗：${IMF[i]}。現有資料沒有變動。</p><button onclick="cl()">知道了</button>`)}
@@ -391,7 +391,7 @@ function upC(id){const c=CARDIO.find(x=>x.id===id),v=i=>$(i).value.trim();Object
 function refreshEXL(){EXL.length=0;ACT.forEach(a=>{if(a.m!=='c'&&SESS.some(s=>s.ex.some(o=>o.name===a.n)))EXL.push({n:a.n,p:a.part,m:em(a)})})}
 function res(){refreshEXL();const q=R.q.trim(),l=EXL.map((e,i)=>[e,i]).filter(([e])=>e.n.includes(q));
  $('res').innerHTML=l.map(([e,i])=>`<div class="row" style="padding-left:0;padding-right:0" onclick="R.ex=${i};R.view='chart';rec()"><span class="pill2">${e.p}</span><div>${e.n}</div><span>›</span></div>`).join('')||'<p class="empty">還沒有可看的動作紀錄</p>'}
-const ST=()=>({PL,ACT,KINDS,PO,TG,LB,day,SESS,CARDIO,LASTDONE,LASTX,SNZ,THEME,RTON,NEWK:[...NEWK],LIVE,SD,SDAY,ver,list});
+const ST=()=>({PL,ACT,KINDS,PO,TG,LB,day,SESS:SESS.map(cs),CARDIO,LASTDONE,LASTX,SNZ,THEME,RTON,NEWK:[...NEWK],LIVE,SD,SDAY,ver,list});
 function sv(){try{localStorage.setItem('sport_v1',JSON.stringify(ST()))}catch(e){}}
 function expo(){const n=`健身記錄_${iso(T0)}.json`,f=new File([JSON.stringify({app:'sport',v:1,data:ST()})],n,{type:'application/json'});LASTX=new Date(T0);sv();
  if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f]}).catch(()=>{});else{const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=n;a.click()}toast('已匯出');rf()}
@@ -445,6 +445,12 @@ try{if(LIVE)list.forEach(o=>o.sets.forEach(s=>{if(full(o,s))s.d=true}))}catch(e)
 function rtu(){const r=$('rt');if(!r)return;if(!LIVE)RTS=0;const on=RTS&&RTON&&LIVE&&!window.DET&&$('app').querySelector('.bar');r.style.display=on?'flex':'none';
  if(on){const t=Math.floor((Date.now()-RTS)/1000),h=Math.floor(t/3600),m=Math.floor(t%3600/60);$('rtt').textContent='休息 '+(h?h+':'+String(m).padStart(2,'0'):m)+':'+String(t%60).padStart(2,'0')}}
 setInterval(rtu,500);
+
+function cs(s){return Object.assign({},s,{ex:s.ex.map(o=>{const x={name:o.name,part:o.part,mode:o.mode,n:o.n,sets:o.sets.map(z=>{const y={reps:z.reps,rir:z.rir};if(o.mode==='g'||o.mode==='a')y.kg=z.kg;if(o.mode==='a')y.type=z.type;if(o.mode==='b')y.color=z.color;if(o.mode==='c')y.ok=z.ok;return y})};if(o.reps)x.reps=o.reps;if(o.rir)x.rir=o.rir;if(o.note)x.note=o.note;if(o.b0)x.b0=1;if(o.extra)x.extra=1;return x})})}
+function rh(s){s.ex.forEach(o=>{Object.assign(o,{open:false,skip:false,was:true,note:o.note||'',best:'',b0:!!o.b0,extra:!!o.extra});o.sets=o.sets.map(z=>Object.assign({kg:'',reps:'',rir:'',type:'輔助',color:'',ok:false,d:true},z))})}
+SESS.forEach(rh);
+function usage(){const n=(localStorage.getItem('sport_v1')||'').length*2;return`${n<1e6?Math.round(n/1e3)+' KB':(n/1e6).toFixed(2)+' MB'}／約 5 MB（估計上限），約 ${(n/5e4).toFixed(1)}%`}
+function openS(id){if(LIVE)return toast('請先結束進行中的訓練');const s=SESS.find(x=>x.id===id);R.sid=id;DET=1;ver=s.ver;list=s.ex;list.forEach(o=>{const a=ACT.find(x=>x.n===o.name);o.best=a?bestS(o.name,a):''});detail()}
 
 today();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
