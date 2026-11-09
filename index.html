@@ -145,7 +145,7 @@ function card(o,e){const d=nd(o)>=o.sets.length&&o.sets.length>0;
  return`<div class="card ${d?'done':''} ${o.skip?'skip':''}" id="c${e}"><div class="ch" onclick="tog(${e})"><b>${o.name}</b><span class="cnt" id="n${e}">${cnt}</span></div>
  ${o.open&&!o.skip?`<div class="body"><div class="tg">${tg}${o.best?`<br>最佳 ${o.best}`:''}</div>${o.sets.map((s,i)=>setRow(o,e,i)).join('')}
  <input class="note" placeholder="備注" value="${o.note}" oninput="list[${e}].note=this.value">
- <div class="acts"><button onclick="addSet(${e})">加一組</button>${ver==='gym'?`<button onclick="sub(${e})">換動作</button>`:''}${o.extra?`<button onclick="rmx(${e})">移除</button>`:`<button onclick="skip(${e})">跳過</button>`}<button onclick="next(${e})">下一個</button></div></div>`:''}</div>`}
+ <div class="acts"><button onclick="addSet(${e})">加一組</button><button onclick="sub(${e})">換動作</button>${o.extra?`<button onclick="rmx(${e})">移除</button>`:`<button onclick="skip(${e})">跳過</button>`}<button onclick="next(${e})">下一個</button></div></div>`:''}</div>`}
 function train(){if(window.DET)return detail();
  $('app').innerHTML=`<header><button class="back" onclick="today()">‹</button>${DAYS[SDAY-1]}<small>${ver==='gym'?'健身房版':'家中版'}・${SD.replace(/-/g,'/')}</small></header>${list.map(card).join('')}
  <div class="wrap"><button class="big" style="background:none;color:var(--ink);border:2px dashed var(--soft);box-shadow:none" onclick="addT()">＋ 加練動作（只影響這次）</button></div><div class="bar"><button class="big" onclick="end()">結束訓練</button></div>`}
@@ -459,6 +459,9 @@ function pickS(){const o=ACT.filter(a=>!a.off&&a.part==='核心'&&a.v.includes(P
 function tgT(n,ov){const lb=(ACT.find(x=>x.n===n)||{}).ov,u=ov||lb;
  if(u){const r=u.rmin||u.rmax?`${u.rmin}–${u.rmax} 下`:'',i=u.imin||u.imax?`RIR ${u.imin}–${u.imax}`:'';return[`${u.sets} 組`,r,i].filter(Boolean).join('・')+(ov?'（已改）':'')}
  const t=TG[n]||'';return'2 組・'+(t[0]==='R'?'RIR '+t.slice(1):t?t+' 下':'')}
+
+function sub(e){const o=list[e],k=ver==='gym'?'g':'h',c=ACT.filter(a=>!a.off&&a.part===o.part&&a.v.includes(k)&&!list.some(x=>x.name===a.n));window._c=c;cl();
+ sheet(`<p>同部位（${o.part}）、場地含${k==='g'?'健身房':'家中'}的動作</p>${c.map((a,i)=>`<button onclick="pick(${e},${i})">${a.n}</button>`).join('')||'<p>沒有可替換動作</p>'}`)}
 
 today();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
