@@ -452,6 +452,14 @@ SESS.forEach(rh);
 function usage(){const n=(localStorage.getItem('sport_v1')||'').length*2;return`${n<1e6?Math.round(n/1e3)+' KB':(n/1e6).toFixed(2)+' MB'}／約 5 MB（估計上限），約 ${(n/5e4).toFixed(1)}%`}
 function openS(id){if(LIVE)return toast('請先結束進行中的訓練');const s=SESS.find(x=>x.id===id);R.sid=id;DET=1;ver=s.ver;list=s.ex;list.forEach(o=>{const a=ACT.find(x=>x.n===o.name);o.best=a?bestS(o.name,a):''});detail()}
 
+function addList(){const have=cur().a.map(a=>a.n);let h='';PO.forEach(p=>{if(p==='核心')return;const l=ACT.filter(a=>!a.off&&a.part===p&&a.v.includes(PV)&&!have.includes(a.n)&&a.n.includes(AQ.trim()));
+ if(l.length)h+=`<div class="grp">${p}</div>`+l.map(a=>`<button class="pk" onclick="tgl(this,'${a.n}')"><span>${a.n}</span><span>${ADD.has(a.n)?'✓':''}</span></button>`).join('')});
+ $('al').innerHTML=h||'<p>沒有符合的動作</p>';$('ac').textContent=ADD.size}
+function pickS(){const o=ACT.filter(a=>!a.off&&a.part==='核心'&&a.v.includes(PV));sheet(`<p>伸展只能選核心類動作</p>${o.map(a=>`<button onclick="cur().s='${a.n}';$('sh').remove();pday(PD)">${a.n}</button>`).join('')||'<p>沒有可選的核心動作</p>'}`)}
+function tgT(n,ov){const lb=(ACT.find(x=>x.n===n)||{}).ov,u=ov||lb;
+ if(u){const r=u.rmin||u.rmax?`${u.rmin}–${u.rmax} 下`:'',i=u.imin||u.imax?`RIR ${u.imin}–${u.imax}`:'';return[`${u.sets} 組`,r,i].filter(Boolean).join('・')+(ov?'（已改）':'')}
+ const t=TG[n]||'';return'2 組・'+(t[0]==='R'?'RIR '+t.slice(1):t?t+' 下':'')}
+
 today();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
 </script>
