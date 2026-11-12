@@ -320,7 +320,7 @@ function rs(t,s){cl();const a=t==='r'?'清除所有訓練與有氧紀錄，動�
 function lst(t){const o=t==='k'?KINDS:PO;return o.map((n,i)=>`<div class="row" style="padding:8px 2px;cursor:default"><div>${n}</div><button class="mv" onclick="nm('${t}',${i})">✎</button><button class="mv" style="color:var(--acc)" onclick="nmD('${t}',${i})">✕</button></div>`).join('')+`<button class="chip" style="margin-top:8px" onclick="nm('${t}',-1)">＋ 新增</button>`}
 function stg(){DET=0;document.body.classList.remove('det');const c=h=>`<div class="card"><div class="body" style="padding-top:12px">${h}</div></div>`,g=t=>`<div class="grp" style="padding:14px 18px 0">${t}</div>`;
  $('app').innerHTML=`<header>設定</header><div id="stg"></div>${g('資料備份')}${c(`<div>上次匯出：${fd(LASTX)}（${ago()} 天前）</div><div class="tg">超過 30 天沒匯出會提醒</div><div class="acts"><button onclick="expo()">匯出</button><button onclick="impo()">匯入</button></div>`)}
- ${g('訓練進度')}${c(`<label class="fl2">下一個要練<select onchange="day=+this.value;toast('已改成第 '+day+' 天')">${[1,2,3,4,5,6,7].map(n=>`<option value="${n}" ${n===day?'selected':''}>第 ${n} 天</option>`).join('')}</select></label>`)}
+ ${g('訓練進度')}${c(`<label class="fl2">下一個要練<select onchange="day=+this.value;TDONE=null;toast('已改成第 '+day+' 天')">${[1,2,3,4,5,6,7].map(n=>`<option value="${n}" ${n===day?'selected':''}>第 ${n} 天</option>`).join('')}</select></label>`)}
  ${g('外觀')}${c(`<div class="seg">${[['s','跟隨系統'],['l','淺色'],['d','深色']].map(([k,n])=>`<button class="${THEME===k?'on':''}" onclick="theme('${k}')">${n}</button>`).join('')}</div>`)}
  ${g('有氧種類')}${c(lst('k'))}${g('部位')}${c(lst('p'))}
  ${g('彈力帶顏色（不可修改）')}${c(`<div class="sw">${Object.keys(COL).map(k=>`<button style="background:${COL[k]}">${k}</button>`).join('')}</div>`)}
@@ -343,7 +343,7 @@ function addC(){DET=0;const f=(l,id,ph,u)=>`<label class="fl2">${l}<span class="
 function saveC(){const v=i=>$(i).value.trim(),k=v('cK');if(!k)return toast('請先選擇種類');
  const h=v('cH'),m=v('cM'),t=[h||m?`${h?h+' 時 ':''}${m||0} 分`:'',v('cL')&&v('cL')+' km',v('cB')&&'平均 '+v('cB'),v('cC')&&v('cC')+' kcal'].filter(Boolean).join('、');
  CARDS.push({d:fd(new Date(v('cD')+'T00:00')),k,t,note:v('cN')});today();toast('已儲存')}
-var RTON=true,RTS=0,SESS=[],CARDIO=[],LASTDONE='',LIVE=false,SD='',SDAY=1;
+var TDONE=null,CONT=0,RTON=true,RTS=0,SESS=[],CARDIO=[],LASTDONE='',LIVE=false,SD='',SDAY=1;
 const em=a=>a.m==='k'?'g':a.m==='b'?(a.b0?'l':'b'):a.m;
 function mkSet(o){return{kg:o.last||'',reps:'',rir:'',type:o.type||'輔助',color:o.lastColor||'',ok:false}}
 function pv(e,x,t){const r=+x.reps||0;
@@ -379,7 +379,7 @@ const ct=c=>[c.h||c.m?`${c.h?c.h+' 時 ':''}${c.m||0} 分`:'',c.km&&c.km+' km',c
 function cardL(){const l=CARDIO.filter(c=>c.d===iso(date));return l.length?`<div class="grp" style="padding:16px 18px 0">這天已記錄的有氧</div>`+l.map(c=>`<div class="row" style="cursor:default"><div>${c.k}<div class="sub2">${ct(c)||'只記種類'}${c.note?'・'+c.note:''}</div></div></div>`).join(''):''}
 function saveC(){const v=i=>$(i).value.trim(),k=v('cK');if(!k)return toast('請先選擇種類');CARDIO.push({id:Date.now(),d:v('cD'),k,h:v('cH'),m:v('cM'),km:v('cL'),bpm:v('cB'),kcal:v('cC'),note:v('cN')});today();toast('已儲存')}
 function rows(){let h='';const m=R.mon,dsc=(a,b)=>a.date<b.date?1:-1;
- if(R.tab==='w')SESS.filter(s=>s.date.slice(0,7)===m).sort(dsc).forEach(s=>{const d=new Date(s.date+'T00:00');h+=`<div class="row" onclick="openS(${s.id})"><span class="pill2">${md(d)}</span><div>${DAYS[s.day-1]}・${s.ver==='gym'?'健身房版':'家中版'}<div class="sub2">星期${WK[d.getDay()]}・完成 ${s.ex.length} 個動作</div></div><span>›</span></div>`});
+ if(R.tab==='w')SESS.filter(s=>s.date.slice(0,7)===m).sort(dsc).forEach(s=>{const d=new Date(s.date+'T00:00');h+=`<div class="row" onclick="openS(${s.id})"><span class="pill2">${md(d)}</span><div>${DAYS[s.day-1]}・${s.ver==='gym'?'健身房版':'家中版'}<div class="sub2">星期${WK[d.getDay()]}・完成 ${s.ex.filter(o=>!o.skip&&o.sets.length).length} 個動作</div></div><span>›</span></div>`});
  else CARDIO.filter(c=>c.d.slice(0,7)===m).sort((a,b)=>a.d<b.d?1:-1).forEach(c=>{h+=`<div class="row" onclick="openC(${c.id})"><span class="pill2">${md(new Date(c.d+'T00:00'))}</span><div>${c.k}<div class="sub2">${ct(c)||'只記種類'}</div></div><span>›</span></div>`});
  return h||'<p class="empty">這個月沒有紀錄</p>'}
 function openS(id){if(LIVE)return toast('請先結束進行中的訓練');const s=SESS.find(x=>x.id===id);R.sid=id;DET=1;ver=s.ver;list=s.ex;detail()}
@@ -391,7 +391,7 @@ function upC(id){const c=CARDIO.find(x=>x.id===id),v=i=>$(i).value.trim();Object
 function refreshEXL(){EXL.length=0;ACT.forEach(a=>{if(a.m!=='c'&&SESS.some(s=>s.ex.some(o=>o.name===a.n)))EXL.push({n:a.n,p:a.part,m:em(a)})})}
 function res(){refreshEXL();const q=R.q.trim(),l=EXL.map((e,i)=>[e,i]).filter(([e])=>e.n.includes(q));
  $('res').innerHTML=l.map(([e,i])=>`<div class="row" style="padding-left:0;padding-right:0" onclick="R.ex=${i};R.view='chart';rec()"><span class="pill2">${e.p}</span><div>${e.n}</div><span>›</span></div>`).join('')||'<p class="empty">還沒有可看的動作紀錄</p>'}
-const ST=()=>({PL,ACT,KINDS,PO,TG,LB,day,SESS:SESS.map(cs),CARDIO,LASTDONE,LASTX,SNZ,THEME,RTON,NEWK:[...NEWK],LIVE,SD,SDAY,ver,list});
+const ST=()=>({PL,ACT,KINDS,PO,TG,LB,day,SESS:SESS.map(cs),CARDIO,LASTDONE,TDONE,v2:1,LASTX,SNZ,THEME,RTON,NEWK:[...NEWK],LIVE,SD,SDAY,CONT,ver,list});
 function sv(){try{localStorage.setItem('sport_v1',JSON.stringify(ST()))}catch(e){}}
 function expo(){const n=`健身記錄_${iso(T0)}.json`,f=new File([JSON.stringify({app:'sport',v:1,data:ST()})],n,{type:'application/json'});LASTX=new Date(T0);sv();
  if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f]}).catch(()=>{});else{const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=n;a.click()}toast('已匯出');rf()}
@@ -404,7 +404,7 @@ function rs(t,s){cl();const a=t==='r'?'清除所有訓練與有氧紀錄，動�
 function doRs(t){if(t==='a')localStorage.removeItem('sport_v1');else{SESS=[];CARDIO=[];LASTDONE='';LIVE=false;list=[];day=1;sv()}location.reload()}
 (function(){try{const s=JSON.parse(localStorage.getItem('sport_v1')||'null');if(!s)return;
  PL=s.PL;ACT=s.ACT;KINDS.splice(0,9e9,...s.KINDS);PO.splice(0,9e9,...s.PO);for(const k in TG)delete TG[k];Object.assign(TG,s.TG);for(const k in LB)delete LB[k];Object.assign(LB,s.LB);
- day=s.day;SESS=s.SESS;CARDIO=s.CARDIO;LASTDONE=s.LASTDONE;LASTX=new Date(s.LASTX);SNZ=s.SNZ?new Date(s.SNZ):null;NEWK=new Set(s.NEWK);LIVE=s.LIVE;SD=s.SD;SDAY=s.SDAY;ver=s.ver;list=s.list;THEME=s.THEME;RTON=s.RTON!==false;
+ day=s.day;SESS=s.SESS;CARDIO=s.CARDIO;LASTDONE=s.LASTDONE;TDONE=s.TDONE||null;LASTX=new Date(s.LASTX);SNZ=s.SNZ?new Date(s.SNZ):null;NEWK=new Set(s.NEWK);LIVE=s.LIVE;SD=s.SD;SDAY=s.SDAY;CONT=s.CONT||0;ver=s.ver;list=s.list;THEME=s.THEME;RTON=s.RTON!==false;
  if(THEME!=='s')document.documentElement.setAttribute('data-theme',THEME==='l'?'light':'dark')}catch(e){}})();
 setInterval(sv,1500);addEventListener('pagehide',sv);document.addEventListener('visibilitychange',sv);
 
@@ -473,6 +473,42 @@ const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 function pnote(n){let b=null;SESS.forEach(s=>s.ex.forEach(x=>{if(x.name!==n)return;if(!b||s.date>b.s.date||(s.date===b.s.date&&s.id>b.s.id))b={s,x}}));return b&&b.x.note?{d:md(new Date(b.s.date+'T00:00')),t:b.x.note}:null}
 function openS(id){if(LIVE)return toast('請先結束進行中的訓練');const s=SESS.find(x=>x.id===id);R.sid=id;DET=1;ver=s.ver;list=s.ex;list.forEach(o=>{o.pn=null;const a=ACT.find(x=>x.n===o.name);o.best=a?bestS(o.name,a):''});detail()}
 (function(){const st=document.createElement('style');st.textContent='.pn{margin-top:4px;color:var(--ink);white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}.pn.x{display:block}';document.head.appendChild(st)})();
+
+const t0=()=>iso(new Date());
+function roll(){if(TDONE&&TDONE.d<t0()){day=TDONE.day%7+1;TDONE=null}}
+function cs(s){return Object.assign({},s,{ex:s.ex.map(o=>{const x={name:o.name,part:o.part,mode:o.mode,n:o.n,sets:o.sets.map(z=>{const y={reps:z.reps,rir:z.rir};if(o.mode==='g'||o.mode==='a')y.kg=z.kg;if(o.mode==='a')y.type=z.type;if(o.mode==='b')y.color=z.color;if(o.mode==='c')y.ok=z.ok;return y})};if(o.reps)x.reps=o.reps;if(o.rir)x.rir=o.rir;if(o.note)x.note=o.note;if(o.b0)x.b0=1;if(o.extra)x.extra=1;if(o.skip)x.skip=1;return x})})}
+function rh(s){s.ex.forEach(o=>{Object.assign(o,{open:false,skip:!!o.skip,was:true,note:o.note||'',best:'',b0:!!o.b0,extra:!!o.extra});o.sets=o.sets.map(z=>Object.assign({kg:'',reps:'',rir:'',type:'輔助',color:'',ok:false,d:true},z))})}
+function pnote(n,ex){let b=null;SESS.forEach(s=>s.ex.forEach(x=>{if(x.name!==n||x.skip||!x.sets.length||s.id===ex)return;if(!b||s.date>b.s.date||(s.date===b.s.date&&s.id>b.s.id))b={s,x}}));return b&&b.x.note?{d:md(new Date(b.s.date+'T00:00')),t:b.x.note}:null}
+function refreshEXL(){EXL.length=0;ACT.forEach(a=>{if(a.m!=='c'&&SESS.some(s=>s.ex.some(o=>o.name===a.n&&o.sets.length)))EXL.push({n:a.n,p:a.part,m:em(a)})})}
+function today(){roll();const e=ed(),bf=!isT(),dn=!bf&&TDONE&&TDONE.d===iso(T0)&&TDONE.day===e;
+ $('app').innerHTML=`<header>今天${bf?' <span class="pill" style="font-size:12px;padding:2px 8px">補記</span>':''}</header>${bk()}<div class="wrap"><div class="hero">
+ <button class="datebtn">${fmt(date)}<input type="date" max="${iso(T0)}" value="${iso(date)}" onchange="chD(this.value)"></button>
+ ${bf?`<div class="fl2" style="justify-content:center;gap:10px;margin-top:8px">補記第幾天<select style="width:auto" onchange="BD=+this.value;today()">${[1,2,3,4,5,6,7].map(n=>`<option value="${n}" ${n===e?'selected':''}>第 ${n} 天</option>`).join('')}</select></div>`:''}
+ <div class="day">第 ${e} 天</div><div class="sub">${DAYS[e-1]}</div>${dn?'<div class="pill" style="display:inline-block;font-size:13px;padding:3px 12px;margin-top:8px">今天已完成</div>':''}</div>
+ ${e===7?`<button class="pill" style="width:100%;padding:16px;font-size:17px;border-radius:14px;margin-top:14px" onclick="addC()">新增有氧（可不做）</button>${dn?`<button class="big" style="opacity:.5;box-shadow:none" onclick="toast('今天已完成，隔天才進下一天')">今天已完成</button>`:`<button class="big" onclick="finishRest()">完成休息日</button>`}<div class="acts" style="margin:0 0 14px"><button onclick="start('gym',1)">加練重訓：健身房</button><button onclick="start('home',1)">加練重訓：家中</button></div>`:`<button class="big" onclick="start('gym')">健身房版</button><button class="big" onclick="start('home')">家中版</button><button class="pill" style="width:100%;padding:14px;font-size:16px;border-radius:14px" onclick="addC()">新增有氧</button>`}</div>${cardL()}${tabs(0)}`}
+function finishRest(){const d=iso(date),e=ed(),t=iso(T0);
+ if(d===t){if(!TDONE||TDONE.d!==t||TDONE.day!==e)TDONE={d:t,day:e,s:{}};if(!LASTDONE||t>LASTDONE)LASTDONE=t;toast('已完成休息日，隔天才進下一天')}
+ else{if(!LASTDONE||d>LASTDONE){day=e%7+1;LASTDONE=d;toast('已補記休息日，進度在第 '+day+' 天')}else toast('已補記休息日（日期不晚於最後完成日，進度不動）')}
+ BD=0;today()}
+function start(v,e){if(LIVE)return toast('有未結束的訓練，請先繼續或結束');const dd=ed();ver=v;SD=iso(date);SDAY=dd;CONT=0;
+ const sid=TDONE&&TDONE.d===SD&&TDONE.day===dd&&TDONE.s&&TDONE.s[v],se=sid&&SESS.find(x=>x.id===sid);
+ if(se){CONT=se.id;list=se.ex.map(o=>{const c=JSON.parse(JSON.stringify(o));if(c.skip||!c.sets.length){const f=obj(c.name);if(f){f.skip=!!c.skip;f.open=!c.skip;f.extra=!!c.extra;f.note=c.note||'';f.pn=pnote(c.name,CONT);return f}}
+  const a=ACT.find(x=>x.n===c.name);c.best=a?bestS(c.name,a):'';c.pn=pnote(c.name,CONT);return c})}
+ else{const d=PL[dd-1],c=d[v==='gym'?'g':'h'];list=e||!d.t?[]:[c.s&&obj(c.s)].concat(c.a.map(a=>obj(a.n,a.ov))).filter(Boolean)}
+ LIVE=true;train()}
+function end(){const ok=list.some(o=>!o.skip&&o.sets.some(s=>full(o,s))),t=iso(T0);
+ const ex=list.map(o=>Object.assign({},o,{sets:o.skip?[]:o.sets.filter(s=>s.reps!==''||s.rir!==''||s.ok)}));let sid=0;
+ if(CONT){const se=SESS.find(x=>x.id===CONT);if(se){se.ex=ex;sid=se.id}}else if(ok){sid=Date.now();SESS.push({id:sid,date:SD,day:SDAY,ver,ex})}
+ const adv=ok||SDAY===7||!!CONT;let msg;
+ if(!adv)msg='沒有完整填完的組，這次不存，進度不動';
+ else if(SD===t){if(!TDONE||TDONE.d!==t||TDONE.day!==SDAY)TDONE={d:t,day:SDAY,s:{}};if(sid)TDONE.s[ver]=sid;if(!LASTDONE||t>LASTDONE)LASTDONE=t;msg=ok||CONT?'已儲存，隔天才進下一天':'已完成休息日，隔天才進下一天'}
+ else if(!LASTDONE||SD>LASTDONE){day=SDAY%7+1;LASTDONE=SD;msg='已儲存，進到第 '+day+' 天'}
+ else msg='已儲存（日期不晚於最後完成日，進度不動）';
+ list=[];LIVE=false;CONT=0;BD=0;toast(msg);today()}
+(function(){try{const raw=JSON.parse(localStorage.getItem('sport_v1')||'null');
+ if(raw&&!raw.v2&&LASTDONE===t0()&&!TDONE){const pd=(day+5)%7+1;day=pd;TDONE={d:LASTDONE,day:pd,s:{}};SESS.filter(x=>x.date===LASTDONE&&x.day===pd).forEach(x=>{TDONE.s[x.ver]=x.id})}}catch(e){}
+ roll()})();
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&t0()!==iso(T0)){sv();location.reload()}});
 
 today();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
