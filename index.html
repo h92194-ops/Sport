@@ -463,6 +463,12 @@ function tgT(n,ov){const lb=(ACT.find(x=>x.n===n)||{}).ov,u=ov||lb;
 function sub(e){const o=list[e],k=ver==='gym'?'g':'h',c=ACT.filter(a=>!a.off&&a.part===o.part&&a.v.includes(k)&&!list.some(x=>x.name===a.n));window._c=c;cl();
  sheet(`<p>同部位（${o.part}）、場地含${k==='g'?'健身房':'家中'}的動作</p>${c.map((a,i)=>`<button onclick="pick(${e},${i})">${a.n}</button>`).join('')||'<p>沒有可替換動作</p>'}`)}
 
+function finishRest(){const d=iso(date),e=ed();if(d===iso(T0)||!LASTDONE||d>LASTDONE){day=e%7+1;LASTDONE=d>(LASTDONE||'')?d:LASTDONE}BD=0;toast('已完成休息日，進度在第 '+day+' 天');today()}
+function end(){const ok=list.some(o=>!o.skip&&o.sets.some(s=>full(o,s)));
+ if(ok){const ex=list.filter(o=>!o.skip).map(o=>Object.assign({},o,{sets:o.sets.filter(s=>s.reps!==''||s.rir!==''||s.ok)})).filter(o=>o.sets.length);SESS.push({id:Date.now(),date:SD,day:SDAY,ver,ex})}
+ const adv=ok||SDAY===7;let pushed=false;if(adv&&(SD===iso(T0)||!LASTDONE||SD>LASTDONE)){day=SDAY%7+1;if(!LASTDONE||SD>LASTDONE)LASTDONE=SD;pushed=true}
+ list=[];LIVE=false;BD=0;toast(!adv?'沒有完整填完的組，這次不存，進度不動':pushed?(ok?'已儲存，進到第 '+day+' 天':'已完成休息日，進到第 '+day+' 天'):'已儲存（日期不晚於最後完成日，進度不動）');today()}
+
 today();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
 </script>
