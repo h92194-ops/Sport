@@ -125,8 +125,8 @@ function today(){
  $('app').innerHTML=`<header>今天</header>${bk()}<div class="wrap"><div class="hero">
  <button class="datebtn">${fmt(date)}<input type="date" value="${date.toISOString().slice(0,10)}" onchange="date=new Date(this.value+'T00:00');today()"></button>
  <div class="day">第 ${day} 天</div><div class="sub">${t}</div></div>
- ${day===7?`<button class="pill" style="width:100%;padding:16px;font-size:17px;border-radius:14px;margin-top:14px" onclick="addC()">新增有氧（可不做）</button><button class="big" onclick="finishRest()">完成休息日</button><div class="acts" style="margin:0 0 14px"><button onclick="start('gym',1)">加練重訓：健身房</button><button onclick="start('home',1)">加練重訓：家中</button></div>`:`<button class="big" onclick="start('gym')">健身房版</button><button class="big" onclick="start('home')">家中版</button>`}
- ${day===7?'':`<button class="pill" style="width:100%;padding:14px;font-size:16px;border-radius:14px" onclick="addC()">新增有氧</button>`}</div>
+ ${isR(day)?`<button class="pill" style="width:100%;padding:16px;font-size:17px;border-radius:14px;margin-top:14px" onclick="addC()">新增有氧（可不做）</button><button class="big" onclick="finishRest()">完成休息日</button><div class="acts" style="margin:0 0 14px"><button onclick="start('gym',1)">加練重訓：健身房</button><button onclick="start('home',1)">加練重訓：家中</button></div>`:`<button class="big" onclick="start('gym')">健身房版</button><button class="big" onclick="start('home')">家中版</button>`}
+ ${isR(day)?'':`<button class="pill" style="width:100%;padding:14px;font-size:16px;border-radius:14px" onclick="addC()">新增有氧</button>`}</div>
  ${cardL()}${tabs(0)}`}
 function finishRest(){day=1;toast('已完成，進到第 1 天');today()}
 function start(v,e){ver=v;list=e?[]:(v==='gym'?GYM:HOME).map(mk);train()}
@@ -370,7 +370,7 @@ function pick(e,i){const x=window._c[i];list[e]=obj(x.n);cl();train();toast('已
 function tdone(){const c=TS.size;[...TS].forEach(n=>{const o=obj(n);if(o){o.extra=true;list.push(o)}});cl();train();toast(`已加入 ${c} 個動作，只影響這次`)}
 function end(){const ok=list.some(o=>!o.skip&&o.sets.some(s=>full(o,s)));
  if(ok){const ex=list.filter(o=>!o.skip).map(o=>Object.assign({},o,{sets:o.sets.filter(s=>s.reps!==''||s.rir!==''||s.ok)})).filter(o=>o.sets.length);SESS.push({id:Date.now(),date:SD,day:SDAY,ver,ex})}
- const adv=ok||SDAY===7;if(adv&&(!LASTDONE||SD>LASTDONE)){day=day%7+1;LASTDONE=SD}
+ const adv=ok||isR(SDAY);if(adv&&(!LASTDONE||SD>LASTDONE)){day=day%7+1;LASTDONE=SD}
  list=[];LIVE=false;toast(ok?'已儲存，進到第 '+day+' 天':adv?'已完成休息日，進到第 '+day+' 天':'沒有完整填完的組，這次不存，進度不動');today()}
 function finishRest(){const d=iso(date);if(!LASTDONE||d>LASTDONE){day=day%7+1;LASTDONE=d}toast('已完成休息日，進到第 '+day+' 天');today()}
 function bk(){let h='';if(LIVE)h+=`<div class="card" style="border-color:var(--acc)"><div class="body" style="padding-top:12px"><div>有未結束的訓練（${SD.slice(5).replace('-','/')}・第 ${SDAY} 天）</div><div class="acts"><button onclick="train()">繼續</button><button onclick="end()">放棄並開始新的</button></div></div></div>`;
@@ -416,13 +416,13 @@ function today(){const e=ed(),bf=!isT();
  <button class="datebtn">${fmt(date)}<input type="date" max="${iso(T0)}" value="${iso(date)}" onchange="chD(this.value)"></button>
  ${bf?`<div class="fl2" style="justify-content:center;gap:10px;margin-top:8px">補記第幾天<select style="width:auto" onchange="BD=+this.value;today()">${[1,2,3,4,5,6,7].map(n=>`<option value="${n}" ${n===e?'selected':''}>第 ${n} 天</option>`).join('')}</select></div>`:''}
  <div class="day">第 ${e} 天</div><div class="sub">${DAYS[e-1]}</div></div>
- ${e===7?`<button class="pill" style="width:100%;padding:16px;font-size:17px;border-radius:14px;margin-top:14px" onclick="addC()">新增有氧（可不做）</button><button class="big" onclick="finishRest()">完成休息日</button><div class="acts" style="margin:0 0 14px"><button onclick="start('gym',1)">加練重訓：健身房</button><button onclick="start('home',1)">加練重訓：家中</button></div>`:`<button class="big" onclick="start('gym')">健身房版</button><button class="big" onclick="start('home')">家中版</button><button class="pill" style="width:100%;padding:14px;font-size:16px;border-radius:14px" onclick="addC()">新增有氧</button>`}</div>${cardL()}${tabs(0)}`}
+ ${isR(e)?`<button class="pill" style="width:100%;padding:16px;font-size:17px;border-radius:14px;margin-top:14px" onclick="addC()">新增有氧（可不做）</button><button class="big" onclick="finishRest()">完成休息日</button><div class="acts" style="margin:0 0 14px"><button onclick="start('gym',1)">加練重訓：健身房</button><button onclick="start('home',1)">加練重訓：家中</button></div>`:`<button class="big" onclick="start('gym')">健身房版</button><button class="big" onclick="start('home')">家中版</button><button class="pill" style="width:100%;padding:14px;font-size:16px;border-radius:14px" onclick="addC()">新增有氧</button>`}</div>${cardL()}${tabs(0)}`}
 function start(v,e){if(LIVE)return toast('有未結束的訓練，請先繼續或結束');const dd=ed();ver=v;SD=iso(date);SDAY=dd;const d=PL[dd-1],c=d[v==='gym'?'g':'h'];
  list=e||!d.t?[]:[c.s&&obj(c.s)].concat(c.a.map(a=>obj(a.n,a.ov))).filter(Boolean);LIVE=true;train()}
 function finishRest(){const d=iso(date),e=ed();if(!LASTDONE||d>LASTDONE){day=e%7+1;LASTDONE=d}BD=0;toast('已完成休息日，進度在第 '+day+' 天');today()}
 function end(){const ok=list.some(o=>!o.skip&&o.sets.some(s=>full(o,s)));
  if(ok){const ex=list.filter(o=>!o.skip).map(o=>Object.assign({},o,{sets:o.sets.filter(s=>s.reps!==''||s.rir!==''||s.ok)})).filter(o=>o.sets.length);SESS.push({id:Date.now(),date:SD,day:SDAY,ver,ex})}
- const adv=ok||SDAY===7;let pushed=false;if(adv&&(!LASTDONE||SD>LASTDONE)){day=SDAY%7+1;LASTDONE=SD;pushed=true}
+ const adv=ok||isR(SDAY);let pushed=false;if(adv&&(!LASTDONE||SD>LASTDONE)){day=SDAY%7+1;LASTDONE=SD;pushed=true}
  list=[];LIVE=false;BD=0;toast(!adv?'沒有完整填完的組，這次不存，進度不動':pushed?'已儲存，進到第 '+day+' 天':'已儲存（日期不晚於最後完成日，進度不動）');today()}
 
 function nmS(t,i){const o=t==='k'?KINDS:PO,n=$('nmI').value.trim();if(!n)return toast('請輸入名稱');if(o.some((x,j)=>j!==i&&x===n))return toast('名稱已存在');
@@ -466,7 +466,7 @@ function sub(e){const o=list[e],k=ver==='gym'?'g':'h',c=ACT.filter(a=>!a.off&&a.
 function finishRest(){const d=iso(date),e=ed();if(d===iso(T0)||!LASTDONE||d>LASTDONE){day=e%7+1;LASTDONE=d>(LASTDONE||'')?d:LASTDONE}BD=0;toast('已完成休息日，進度在第 '+day+' 天');today()}
 function end(){const ok=list.some(o=>!o.skip&&o.sets.some(s=>full(o,s)));
  if(ok){const ex=list.filter(o=>!o.skip).map(o=>Object.assign({},o,{sets:o.sets.filter(s=>s.reps!==''||s.rir!==''||s.ok)})).filter(o=>o.sets.length);SESS.push({id:Date.now(),date:SD,day:SDAY,ver,ex})}
- const adv=ok||SDAY===7;let pushed=false;if(adv&&(SD===iso(T0)||!LASTDONE||SD>LASTDONE)){day=SDAY%7+1;if(!LASTDONE||SD>LASTDONE)LASTDONE=SD;pushed=true}
+ const adv=ok||isR(SDAY);let pushed=false;if(adv&&(SD===iso(T0)||!LASTDONE||SD>LASTDONE)){day=SDAY%7+1;if(!LASTDONE||SD>LASTDONE)LASTDONE=SD;pushed=true}
  list=[];LIVE=false;BD=0;toast(!adv?'沒有完整填完的組，這次不存，進度不動':pushed?(ok?'已儲存，進到第 '+day+' 天':'已完成休息日，進到第 '+day+' 天'):'已儲存（日期不晚於最後完成日，進度不動）');today()}
 
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -485,7 +485,7 @@ function today(){roll();const e=ed(),bf=!isT(),dn=!bf&&TDONE&&TDONE.d===iso(T0)&
  <button class="datebtn">${fmt(date)}<input type="date" max="${iso(T0)}" value="${iso(date)}" onchange="chD(this.value)"></button>
  ${bf?`<div class="fl2" style="justify-content:center;gap:10px;margin-top:8px">補記第幾天<select style="width:auto" onchange="BD=+this.value;today()">${[1,2,3,4,5,6,7].map(n=>`<option value="${n}" ${n===e?'selected':''}>第 ${n} 天</option>`).join('')}</select></div>`:''}
  <div class="day">第 ${e} 天</div><div class="sub">${DAYS[e-1]}</div>${dn?'<div class="pill" style="display:inline-block;font-size:13px;padding:3px 12px;margin-top:8px">今天已完成</div>':''}</div>
- ${e===7?`<button class="pill" style="width:100%;padding:16px;font-size:17px;border-radius:14px;margin-top:14px" onclick="addC()">新增有氧（可不做）</button>${dn?`<button class="big" style="opacity:.5;box-shadow:none" onclick="toast('今天已完成，隔天才進下一天')">今天已完成</button>`:`<button class="big" onclick="finishRest()">完成休息日</button>`}<div class="acts" style="margin:0 0 14px"><button onclick="start('gym',1)">加練重訓：健身房</button><button onclick="start('home',1)">加練重訓：家中</button></div>`:`<button class="big" onclick="start('gym')">健身房版</button><button class="big" onclick="start('home')">家中版</button><button class="pill" style="width:100%;padding:14px;font-size:16px;border-radius:14px" onclick="addC()">新增有氧</button>`}</div>${cardL()}${tabs(0)}`}
+ ${isR(e)?`<button class="pill" style="width:100%;padding:16px;font-size:17px;border-radius:14px;margin-top:14px" onclick="addC()">新增有氧（可不做）</button>${dn?`<button class="big" style="opacity:.5;box-shadow:none" onclick="toast('今天已完成，隔天才進下一天')">今天已完成</button>`:`<button class="big" onclick="finishRest()">完成休息日</button>`}<div class="acts" style="margin:0 0 14px"><button onclick="start('gym',1)">加練重訓：健身房</button><button onclick="start('home',1)">加練重訓：家中</button></div>`:`<button class="big" onclick="start('gym')">健身房版</button><button class="big" onclick="start('home')">家中版</button><button class="pill" style="width:100%;padding:14px;font-size:16px;border-radius:14px" onclick="addC()">新增有氧</button>`}</div>${cardL()}${tabs(0)}`}
 function finishRest(){const d=iso(date),e=ed(),t=iso(T0);
  if(d===t){if(!TDONE||TDONE.d!==t||TDONE.day!==e)TDONE={d:t,day:e,s:{}};if(!LASTDONE||t>LASTDONE)LASTDONE=t;toast('已完成休息日，隔天才進下一天')}
  else{if(!LASTDONE||d>LASTDONE){day=e%7+1;LASTDONE=d;toast('已補記休息日，進度在第 '+day+' 天')}else toast('已補記休息日（日期不晚於最後完成日，進度不動）')}
@@ -499,7 +499,7 @@ function start(v,e){if(LIVE)return toast('有未結束的訓練，請先繼續�
 function end(){const ok=list.some(o=>!o.skip&&o.sets.some(s=>full(o,s))),t=iso(T0);
  const ex=list.map(o=>Object.assign({},o,{sets:o.skip?[]:o.sets.filter(s=>s.reps!==''||s.rir!==''||s.ok)}));let sid=0;
  if(CONT){const se=SESS.find(x=>x.id===CONT);if(se){se.ex=ex;sid=se.id}}else if(ok){sid=Date.now();SESS.push({id:sid,date:SD,day:SDAY,ver,ex})}
- const adv=ok||SDAY===7||!!CONT;let msg;
+ const adv=ok||isR(SDAY)||!!CONT;let msg;
  if(!adv)msg='沒有完整填完的組，這次不存，進度不動';
  else if(SD===t){if(!TDONE||TDONE.d!==t||TDONE.day!==SDAY)TDONE={d:t,day:SDAY,s:{}};if(sid)TDONE.s[ver]=sid;if(!LASTDONE||t>LASTDONE)LASTDONE=t;msg=ok||CONT?'已儲存，隔天才進下一天':'已完成休息日，隔天才進下一天'}
  else if(!LASTDONE||SD>LASTDONE){day=SDAY%7+1;LASTDONE=SD;msg='已儲存，進到第 '+day+' 天'}
@@ -509,6 +509,10 @@ function end(){const ok=list.some(o=>!o.skip&&o.sets.some(s=>full(o,s))),t=iso(T
  if(raw&&!raw.v2&&LASTDONE===t0()&&!TDONE){const pd=(day+5)%7+1;day=pd;TDONE={d:LASTDONE,day:pd,s:{}};SESS.filter(x=>x.date===LASTDONE&&x.day===pd).forEach(x=>{TDONE.s[x.ver]=x.id})}}catch(e){}
  roll()})();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&t0()!==iso(T0)){sv();location.reload()}});
+
+function isR(n){return!(PL[n-1]&&PL[n-1].t)}
+function syncDays(){let k=0;PL.forEach((d,i)=>{DAYS[i]=d.t?'訓練日'+'一二三四五六七'[k++]:'休息日'})}
+['today','plan','pday','rec','train','detail','stg'].forEach(n=>{const f=window[n];window[n]=function(){syncDays();return f.apply(this,arguments)}});syncDays();
 
 today();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
